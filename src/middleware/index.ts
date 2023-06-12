@@ -31,7 +31,7 @@ export default class Middleware {
     // Parse json request body
     this.app.use(json());
     // Parse urlencoded request body
-    this.app.use(urlencoded({ extended: false }));
+    this.app.use(urlencoded({ extended: true }));
     // Set security HTTP headers
     this.app.use(helmet());
     // Cors

@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import exampleRouter from "./modules/example/router.js";
+import userRouter from "./modules/user/router.js";
 
 export default function () {
   const app: Express = express();
@@ -9,6 +10,7 @@ export default function () {
    * <modules>/router.ts
    */
   app.use("/v1/examples", exampleRouter);
+  app.use("/v1/users", userRouter);
 
   return app;
 }

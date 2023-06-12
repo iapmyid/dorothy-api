@@ -6,7 +6,8 @@ export interface DocumentInterface {
 export interface QueryInterface {
   fields: string;
   excludeFields?: string[];
-  filter: { [key: string]: unknown };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filter: { [key: string]: any };
   page: number;
   pageSize: number;
   sort: string;
