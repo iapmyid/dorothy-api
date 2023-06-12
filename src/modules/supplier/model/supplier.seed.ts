@@ -1,6 +1,6 @@
 export const supplierSeeds = [
   {
-    name: "Central Supplier",
+    name: "Supplier A",
     createdAt: new Date(),
   },
 ];
