@@ -1,7 +1,7 @@
-import { RetrieveAllUserRepository } from "../model/repository/retrieve-all.repository.js";
+import { RetrieveAllWarehouseRepository } from "../model/repository/retrieve-all.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 
-export class RetrieveAllUserUseCase {
+export class RetrieveAllWarehouseUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -14,7 +14,7 @@ export class RetrieveAllUserUseCase {
       query.filter = {
         $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
       };
-      const response = await new RetrieveAllUserRepository(this.db).handle(query, options);
+      const response = await new RetrieveAllWarehouseRepository(this.db).handle(query, options);
 
       return {
         data: response.data,
