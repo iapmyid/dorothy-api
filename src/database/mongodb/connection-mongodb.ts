@@ -282,7 +282,11 @@ export default class MongoDbConnection implements IDatabaseAdapter {
     const updateOptions = options as UpdateOptions;
 
     try {
-      const result = await this._collection.updateOne({ _id: new ObjectId(id) }, { $set: document }, updateOptions);
+      const result = await this._collection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: replaceStringToObjectId(document) },
+        updateOptions
+      );
 
       return {
         acknowledged: result.acknowledged,
@@ -408,7 +412,7 @@ export default class MongoDbConnection implements IDatabaseAdapter {
 
     const totalDocument = resultPagination.length ? resultPagination[0].totalDocument : 0;
     return {
-      data: result as Array<RetrieveResultInterface>,
+      data: replaceObjectIdToString(result) as Array<RetrieveResultInterface>,
       pagination: {
         page: page(query.page),
         pageCount: Math.ceil(totalDocument / limit(query.pageSize)),
