@@ -1,9 +1,12 @@
 import express, { static as ExpressStatic, Express } from "express";
+import { addCustomValidator } from "./utils/validator.js";
 import Middleware from "@src/middleware/index.js";
 import router from "@src/router.js";
 
 export async function createApp() {
   const app: Express = express();
+
+  addCustomValidator();
 
   const middleware = new Middleware(app);
   middleware.registerBeforeRoutes();
