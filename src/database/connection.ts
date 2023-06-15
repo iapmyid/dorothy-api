@@ -15,6 +15,8 @@ export interface QueryInterface {
 
 export interface OptionsInterface {
   session?: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 export type CreateOptionsInterface = OptionsInterface;
 export type CreateManyOptionsInterface = OptionsInterface;

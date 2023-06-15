@@ -1,7 +1,9 @@
+import { ApiError } from "@point-hub/express-error-handler";
 import { objClean } from "@point-hub/express-utils";
 import { CreateUserRepository } from "../model/repository/create.repository.js";
 import { UserEntity, UserStatusTypes } from "../model/user.entity.js";
 import { validate } from "../validation/create.validation.js";
+import { VerifyTokenUseCase } from "./verify-token.use-case.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 import { hash } from "@src/utils/hash.js";
 
@@ -14,6 +16,19 @@ export class CreateUserUseCase {
 
   public async handle(document: DocumentInterface, options: CreateOptionsInterface) {
     try {
+      /**
+       * Request should come from authenticated user
+       */
+      const authorizationHeader = options.authorizationHeader ?? "";
+
+      if (authorizationHeader === "") {
+        throw new ApiError(401);
+      }
+
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const authUser = (await verifyTokenUserService.handle(authorizationHeader)) as any;
+
       // validate request body
       validate(document);
 
@@ -26,10 +41,13 @@ export class CreateUserUseCase {
           role: document.role,
           status: UserStatusTypes.Active,
           createdAt: new Date(),
+          createdBy_id: authUser._id,
         })
       );
 
-      const response = await new CreateUserRepository(this.db).handle(userEntity, options);
+      const response = await new CreateUserRepository(this.db).handle(userEntity, {
+        session: options.session,
+      });
 
       return {
         acknowledged: response.acknowledged,

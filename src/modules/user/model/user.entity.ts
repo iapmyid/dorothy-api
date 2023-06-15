@@ -4,7 +4,9 @@ export enum UserStatusTypes {
 }
 
 export enum UserRolesTypes {
-  Admin = "admin",
+  Administrator = "administrator",
+  AdminPurchasing = "admin purchasing",
+  AdminStock = "admin stock",
   Cashier = "cashier",
 }
 
@@ -17,6 +19,8 @@ export interface UserEntityInterface {
   status?: UserStatusTypes;
   createdAt?: Date;
   updatedAt?: Date;
+  createdBy_id?: string;
+  updatedBy_id?: string;
 }
 
 export class UserEntity implements UserEntityInterface {
@@ -28,6 +32,8 @@ export class UserEntity implements UserEntityInterface {
   public status?: UserStatusTypes;
   public createdAt?: Date;
   public updatedAt?: Date;
+  public createdBy_id?: string;
+  public updatedBy_id?: string;
 
   constructor(user: UserEntityInterface) {
     this._id = user._id;
@@ -38,5 +44,7 @@ export class UserEntity implements UserEntityInterface {
     this.status = user.status;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
+    this.createdBy_id = user.createdBy_id;
+    this.updatedBy_id = user.updatedBy_id;
   }
 }

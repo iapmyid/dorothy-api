@@ -13,7 +13,10 @@ export const createController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const createUserUseCase = new CreateUserUseCase(db);
-    const result = await createUserUseCase.handle(req.body, { session });
+    const result = await createUserUseCase.handle(req.body, {
+      session,
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     await db.commitTransaction();
 
