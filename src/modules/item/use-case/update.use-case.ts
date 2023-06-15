@@ -27,6 +27,7 @@ export class UpdateItemUseCase {
       // update database
       const itemEntity = new ItemEntity({
         name: document.name,
+        itemCategory_id: document.itemCategory_id,
         sellingPrice: document.sellingPrice,
         updatedAt: new Date(),
         updatedBy_id: authUser._id,
