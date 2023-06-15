@@ -6,6 +6,8 @@ export interface CustomerEntityInterface {
   email?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  createdBy_id?: string;
+  updatedBy_id?: string;
 }
 
 export class CustomerEntity implements CustomerEntityInterface {
@@ -16,6 +18,8 @@ export class CustomerEntity implements CustomerEntityInterface {
   public email?: string;
   public createdAt?: Date;
   public updatedAt?: Date;
+  public createdBy_id?: string;
+  public updatedBy_id?: string;
 
   constructor(customer: CustomerEntityInterface) {
     this._id = customer._id;
@@ -25,5 +29,7 @@ export class CustomerEntity implements CustomerEntityInterface {
     this.email = customer.email;
     this.createdAt = customer.createdAt;
     this.updatedAt = customer.updatedAt;
+    this.createdBy_id = customer.createdBy_id;
+    this.updatedBy_id = customer.updatedBy_id;
   }
 }

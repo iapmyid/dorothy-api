@@ -14,7 +14,9 @@ export const retrieveAllController = async (req: Request, res: Response, next: N
     };
 
     const createCustomerUseCase = new RetrieveAllCustomerUseCase(db);
-    const result = await createCustomerUseCase.handle(query as unknown as QueryInterface);
+    const result = await createCustomerUseCase.handle(query as unknown as QueryInterface, {
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     res.status(200).json({
       data: result.data,

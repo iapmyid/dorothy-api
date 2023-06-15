@@ -9,7 +9,10 @@ export const updateController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const updateCustomerUseCase = new UpdateCustomerUseCase(db);
-    await updateCustomerUseCase.handle(req.params.id, req.body, { session });
+    await updateCustomerUseCase.handle(req.params.id, req.body, {
+      session,
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     await db.commitTransaction();
 
