@@ -28,7 +28,7 @@ export class UpdateUserUseCase {
       const userEntity = new UserEntity({
         role: document.role,
         updatedAt: new Date(),
-        updatedBy_id: authUser.updatedBy_id,
+        updatedBy_id: authUser._id,
       });
 
       const userRepository = new UpdateUserRepository(this.db);
