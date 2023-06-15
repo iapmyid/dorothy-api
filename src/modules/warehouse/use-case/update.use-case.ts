@@ -3,6 +3,7 @@ import { UpdateWarehouseRepository } from "../model/repository/update.repository
 import { WarehouseEntity } from "../model/warehouse.entity.js";
 import { validate } from "../validation/update.validation.js";
 import DatabaseConnection, { UpdateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class UpdateWarehouseUseCase {
   private db: DatabaseConnection;
@@ -13,6 +14,13 @@ export class UpdateWarehouseUseCase {
 
   public async handle(id: string, document: DocumentInterface, options: UpdateOptionsInterface) {
     try {
+      /**
+       * Request should come from authenticated user
+       */
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const authUser = (await verifyTokenUserService.handle(options.authorizationHeader ?? "")) as any;
+
       // validate request body
       validate(document);
 
@@ -20,10 +28,13 @@ export class UpdateWarehouseUseCase {
       const warehouseEntity = new WarehouseEntity({
         name: document.name,
         updatedAt: new Date(),
+        updatedBy_id: authUser._id,
       });
 
       const warehouseRepository = new UpdateWarehouseRepository(this.db);
-      await warehouseRepository.handle(id, objClean(warehouseEntity), options);
+      await warehouseRepository.handle(id, objClean(warehouseEntity), {
+        session: options.session,
+      });
 
       return;
     } catch (error) {
