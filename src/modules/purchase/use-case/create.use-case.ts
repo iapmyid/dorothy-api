@@ -3,6 +3,8 @@ import { PurchaseEntity } from "../model/purchase.entity.js";
 import { CreatePurchaseRepository } from "../model/repository/create.repository.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
+import { CreateInventoryRepository } from "@src/modules/inventory/model/repository/create.repository.js";
 import { ItemEntity } from "@src/modules/item/model/item.entity.js";
 import { CreateItemRepository } from "@src/modules/item/model/repository/create.repository.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
@@ -26,18 +28,19 @@ export class CreatePurchaseUseCase {
       // validate request body
       validate(document);
 
+      const createdAt = new Date();
+
       // save to database
       const itemEntity = objClean(
         new ItemEntity({
           itemCategory_id: document.itemCategory_id,
           name: document.name,
           sellingPrice: document.sellingPrice,
-          createdAt: new Date(),
+          createdAt: createdAt,
           createdBy_id: authUser._id,
         })
       );
-
-      const responseItem = await new CreateItemRepository(this.db).handle(itemEntity, options);
+      const responseItem = await new CreateItemRepository(this.db).handle(itemEntity, { session: options.session });
 
       // save to database
       const purchaseEntity = objClean(
@@ -57,13 +60,30 @@ export class CreatePurchaseUseCase {
           totalProfit: document.totalProfit,
           totalSelling: document.totalSelling,
           sellingPrice: document.sellingPrice,
-          createdAt: new Date(),
+          createdAt: createdAt,
           createdBy_id: authUser._id,
         })
       );
+      const response = await new CreatePurchaseRepository(this.db).handle(purchaseEntity, { session: options.session });
 
-      const response = await new CreatePurchaseRepository(this.db).handle(purchaseEntity, options);
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      for (const el of document.size) {
+        if (el.quantity) {
+          // save to database
+          const inventoryEntity = objClean(
+            new InventoryEntity({
+              warehouse_id: document.warehouse_id,
+              reference: "purchase",
+              reference_id: response._id,
+              item_id: responseItem._id,
+              size: el.label,
+              quantity: el.quantity,
+              createdAt: createdAt,
+            })
+          );
+          await new CreateInventoryRepository(this.db).handle(inventoryEntity, { session: options.session });
+        }
+      }
       return {
         acknowledged: response.acknowledged,
         _id: response._id,

@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import customerRouter from "./modules/customer/router.js";
+import inventoryRouter from "./modules/inventory/router.js";
 import itemRouter from "./modules/item/router.js";
 import itemCategoryRouter from "./modules/item-category/router.js";
 import purchaseRouter from "./modules/purchase/router.js";
@@ -21,5 +22,6 @@ export default function () {
   app.use("/v1/item-categories", itemCategoryRouter);
   app.use("/v1/items", itemRouter);
   app.use("/v1/purchases", purchaseRouter);
+  app.use("/v1/inventories", inventoryRouter);
   return app;
 }
