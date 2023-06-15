@@ -14,7 +14,9 @@ export const retrieveAllController = async (req: Request, res: Response, next: N
     };
 
     const createItemCategoryUseCase = new RetrieveAllItemCategoryUseCase(db);
-    const result = await createItemCategoryUseCase.handle(query as unknown as QueryInterface);
+    const result = await createItemCategoryUseCase.handle(query as unknown as QueryInterface, {
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     res.status(200).json({
       data: result.data,

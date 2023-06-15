@@ -5,7 +5,9 @@ import { db } from "@src/database/database.js";
 export const retrieveController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const createItemCategoryUseCase = new RetrieveItemCategoryUseCase(db);
-    const result = await createItemCategoryUseCase.handle(req.params.id);
+    const result = await createItemCategoryUseCase.handle(req.params.id, {
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     res.status(200).json({
       _id: result._id,

@@ -1,5 +1,6 @@
 import { DeleteItemCategoryRepository } from "../model/repository/delete.repository.js";
 import DatabaseConnection, { DeleteOptionsInterface } from "@src/database/connection.js";
+import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class DeleteItemCategoryUseCase {
   private db: DatabaseConnection;
@@ -10,6 +11,12 @@ export class DeleteItemCategoryUseCase {
 
   public async handle(id: string, options: DeleteOptionsInterface) {
     try {
+      /**
+       * Request should come from authenticated user
+       */
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      await verifyTokenUserService.handle(options.authorizationHeader ?? "");
+
       const response = await new DeleteItemCategoryRepository(this.db).handle(id, options);
 
       return {

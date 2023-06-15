@@ -13,7 +13,10 @@ export const createController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const createItemCategoryUseCase = new CreateItemCategoryUseCase(db);
-    const result = await createItemCategoryUseCase.handle(req.body, { session });
+    const result = await createItemCategoryUseCase.handle(req.body, {
+      session,
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     await db.commitTransaction();
 
