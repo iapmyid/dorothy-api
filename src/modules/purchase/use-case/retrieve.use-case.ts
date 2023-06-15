@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { sizeTypes } from "../model/purchase.entity.js";
 import { AggregatePurchaseRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
+import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export interface ResponseInterface {
   _id: string;
@@ -29,8 +30,14 @@ export class RetrievePurchaseUseCase {
     this.db = db;
   }
 
-  public async handle(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
+  public async handle(id: string, options: RetrieveOptionsInterface): Promise<ResponseInterface> {
     try {
+      /**
+       * Request should come from authenticated user
+       */
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      await verifyTokenUserService.handle(options.authorizationHeader ?? "");
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pipeline: any[] = [
         {

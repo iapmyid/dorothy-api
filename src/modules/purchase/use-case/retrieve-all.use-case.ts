@@ -1,6 +1,7 @@
 import { AggregatePurchaseRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
-import { fields, limit, page, skip, sort } from "@src/database/mongodb/mongodb-querystring.js";
+import { fields } from "@src/database/mongodb/mongodb-querystring.js";
+import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class RetrieveAllPurchaseUseCase {
   private db: DatabaseConnection;
@@ -9,8 +10,14 @@ export class RetrieveAllPurchaseUseCase {
     this.db = db;
   }
 
-  public async handle(query: QueryInterface, options?: RetrieveAllOptionsInterface) {
+  public async handle(query: QueryInterface, options: RetrieveAllOptionsInterface) {
     try {
+      /**
+       * Request should come from authenticated user
+       */
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      await verifyTokenUserService.handle(options.authorizationHeader ?? "");
+
       const filter = query.filter;
       query.filter = {
         $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],

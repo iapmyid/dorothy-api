@@ -15,7 +15,10 @@ export const createController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const createPurchaseUseCase = new CreatePurchaseUseCase(db);
-    const result = await createPurchaseUseCase.handle(req.body, { session });
+    const result = await createPurchaseUseCase.handle(req.body, {
+      session,
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     await db.commitTransaction();
 

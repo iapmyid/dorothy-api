@@ -3,6 +3,7 @@ import { PurchaseEntity } from "../model/purchase.entity.js";
 import { CreatePurchaseRepository } from "../model/repository/create.repository.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class CreatePurchaseUseCase {
   private db: DatabaseConnection;
@@ -13,6 +14,13 @@ export class CreatePurchaseUseCase {
 
   public async handle(document: DocumentInterface, options: CreateOptionsInterface) {
     try {
+      /**
+       * Request should come from authenticated user
+       */
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const authUser = (await verifyTokenUserService.handle(options.authorizationHeader ?? "")) as any;
+
       // validate request body
       validate(document);
 
@@ -34,9 +42,10 @@ export class CreatePurchaseUseCase {
           totalSelling: document.totalSelling,
           sellingPrice: document.sellingPrice,
           createdAt: new Date(),
+          createdBy_id: authUser._id,
         })
       );
-      console.log(purchaseEntity);
+
       const response = await new CreatePurchaseRepository(this.db).handle(purchaseEntity, options);
 
       return {

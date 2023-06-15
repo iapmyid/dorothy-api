@@ -21,6 +21,8 @@ export interface PurchaseEntityInterface {
   sellingPrice?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  createdBy_id?: string;
+  updatedBy_id?: string;
 }
 
 export class PurchaseEntity implements PurchaseEntityInterface {
@@ -41,6 +43,8 @@ export class PurchaseEntity implements PurchaseEntityInterface {
   public sellingPrice?: number;
   public createdAt?: Date;
   public updatedAt?: Date;
+  public createdBy_id?: string;
+  public updatedBy_id?: string;
 
   constructor(purchase: PurchaseEntityInterface) {
     this._id = purchase._id;
@@ -60,5 +64,7 @@ export class PurchaseEntity implements PurchaseEntityInterface {
     this.sellingPrice = purchase.sellingPrice;
     this.createdAt = purchase.createdAt;
     this.updatedAt = purchase.updatedAt;
+    this.createdBy_id = purchase.createdBy_id;
+    this.updatedBy_id = purchase.updatedBy_id;
   }
 }
