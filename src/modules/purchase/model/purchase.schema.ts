@@ -22,7 +22,22 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - update schema`);
     await db.updateSchema(collection, {
       bsonType: "object",
-      required: ["name"],
+      required: [
+        "warehouse_id",
+        "supplier_id",
+        "item_category_id",
+        "item_id",
+        "code",
+        "name",
+        "size",
+        "totalQuantity",
+        "price",
+        "totalPrice",
+        "profitMargin",
+        "totalProfit",
+        "totalSelling",
+        "sellingPrice",
+      ],
       properties: {
         name: {
           bsonType: "string",
