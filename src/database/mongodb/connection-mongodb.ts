@@ -243,7 +243,7 @@ export default class MongoDbConnection implements IDatabaseAdapter {
 
     const retrieveOptions = options as FindOptions;
     const cursor = this._collection
-      .find(query.filter ?? {}, retrieveOptions)
+      .find(replaceStringToObjectId(query.filter) ?? {}, retrieveOptions)
       .limit(limit(query.pageSize))
       .skip(skip(page(query.page), limit(query.pageSize)));
 
