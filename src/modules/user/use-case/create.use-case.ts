@@ -18,10 +18,9 @@ export class CreateUserUseCase {
       /**
        * Request should come from authenticated user
        */
-      const authorizationHeader = options.authorizationHeader ?? "";
       const verifyTokenUserService = new VerifyTokenUseCase(this.db);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const authUser = (await verifyTokenUserService.handle(authorizationHeader)) as any;
+      const authUser = (await verifyTokenUserService.handle(options.authorizationHeader ?? "")) as any;
 
       // validate request body
       validate(document);
