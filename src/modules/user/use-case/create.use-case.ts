@@ -1,4 +1,3 @@
-import { ApiError } from "@point-hub/express-error-handler";
 import { objClean } from "@point-hub/express-utils";
 import { CreateUserRepository } from "../model/repository/create.repository.js";
 import { UserEntity, UserStatusTypes } from "../model/user.entity.js";
@@ -20,11 +19,6 @@ export class CreateUserUseCase {
        * Request should come from authenticated user
        */
       const authorizationHeader = options.authorizationHeader ?? "";
-
-      if (authorizationHeader === "") {
-        throw new ApiError(401);
-      }
-
       const verifyTokenUserService = new VerifyTokenUseCase(this.db);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const authUser = (await verifyTokenUserService.handle(authorizationHeader)) as any;

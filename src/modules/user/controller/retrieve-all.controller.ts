@@ -14,7 +14,7 @@ export const retrieveAllController = async (req: Request, res: Response, next: N
     };
 
     const retrieveAllUserUseCase = new RetrieveAllUserUseCase(db);
-    const result = await retrieveAllUserUseCase.handle(query);
+    const result = await retrieveAllUserUseCase.handle(query, { authorizationHeader: req.headers.authorization ?? "" });
     res.status(200).json({
       data: result.data,
       pagination: result.pagination,

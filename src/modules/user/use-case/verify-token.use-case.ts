@@ -2,7 +2,6 @@ import { ApiError } from "@point-hub/express-error-handler";
 import { RetrieveUserRepository } from "../model/repository/retrieve.repository.js";
 import { secretKey } from "@src/config/auth.js";
 import DatabaseConnection from "@src/database/connection.js";
-import { verify } from "@src/utils/hash.js";
 import { verifyToken } from "@src/utils/jwt.js";
 
 export class VerifyTokenUseCase {

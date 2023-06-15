@@ -1,5 +1,6 @@
 import { RetrieveUserRepository } from "../model/repository/retrieve.repository.js";
 import { UserStatusTypes } from "../model/user.entity.js";
+import { VerifyTokenUseCase } from "./verify-token.use-case.js";
 import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/connection.js";
 
 interface ResponseInterface {
@@ -18,8 +19,14 @@ export class RetrieveUserUseCase {
     this.db = db;
   }
 
-  public async handle(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
+  public async handle(id: string, options: RetrieveOptionsInterface): Promise<ResponseInterface> {
     try {
+      /**
+       * Request should come from authenticated user
+       */
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      await verifyTokenUserService.handle(options.authorizationHeader ?? "");
+
       const response = await new RetrieveUserRepository(this.db).handle(id, options);
 
       return {
