@@ -32,6 +32,7 @@ export class CreateUserUseCase {
           username: document.username,
           password: await hash(document.password),
           role: document.role,
+          warehouse_id: document.warehouse_id,
           status: UserStatusTypes.Active,
           createdAt: new Date(),
           createdBy_id: authUser._id,

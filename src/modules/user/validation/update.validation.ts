@@ -6,7 +6,10 @@ import { DocumentInterface } from "@src/database/connection.js";
 export const validate = (document: DocumentInterface = {}) => {
   try {
     const validation = new Validatorjs(document, {
-      role: "required",
+      name: "required|string",
+      username: "required|string",
+      role: "required|string",
+      warehouse_id: "required|string",
     });
 
     if (validation.fails()) {

@@ -11,7 +11,7 @@ export class AggregateUserRepository {
   constructor(databaseConnection: DatabaseConnection) {
     this.databaseManager = new DatabaseManager(databaseConnection, "users");
   }
-  public async aggregate(
+  public async handle(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     pipeline: any[],
     query: AggregateQueryInterface,

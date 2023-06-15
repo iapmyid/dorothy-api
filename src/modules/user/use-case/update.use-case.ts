@@ -27,6 +27,7 @@ export class UpdateUserUseCase {
       // update database
       const userEntity = new UserEntity({
         role: document.role,
+        warehouse_id: document.warehouse_id,
         updatedAt: new Date(),
         updatedBy_id: authUser._id,
       });

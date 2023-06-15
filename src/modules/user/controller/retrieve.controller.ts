@@ -14,6 +14,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       name: result.name,
       username: result.username,
       role: result.role,
+      warehouse: result.warehouse,
       status: result.status,
       createdAt: result.createdAt,
     });

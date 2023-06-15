@@ -1,6 +1,7 @@
 import { RetrieveAllUserRepository } from "../model/repository/retrieve-all.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 import { VerifyTokenUseCase } from "./verify-token.use-case.js";
+import { AggregateUserRepository } from "../model/repository/aggregate.repository.js";
 
 export class RetrieveAllUserUseCase {
   private db: DatabaseConnection;
@@ -21,7 +22,41 @@ export class RetrieveAllUserUseCase {
       query.filter = {
         $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
       };
-      const response = await new RetrieveAllUserRepository(this.db).handle(query, options);
+      
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const pipeline: any[] = [
+        {
+          $lookup: {
+            from: "warehouses",
+            localField: "warehouse_id",
+            foreignField: "_id",
+            pipeline: [{ $project: { name: 1 } }],
+            as: "warehouse",
+          },
+        },
+        {
+          $set: {
+            warehouse: {
+              $arrayElemAt: ["$warehouse", 0],
+            },
+          },
+        },
+        { $unset: ["warehouse_id"] },
+      ];
+
+      if (query && query.fields) {
+        pipeline.push({ $project: fields(query.fields) });
+      }
+
+      if (query && query.sort) {
+        pipeline.push({ $sort: { createdAt: -1 } });
+      }
+
+      if (query && query.filter) {
+        pipeline.push({ $match: { ...query.filter } });
+      }
+
+      const response = await new AggregateUserRepository(this.db).handle(pipeline, query, options);
 
       return {
         data: response.data,
