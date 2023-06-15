@@ -1,5 +1,6 @@
 import { DeleteSupplierRepository } from "../model/repository/delete.repository.js";
 import DatabaseConnection, { DeleteOptionsInterface } from "@src/database/connection.js";
+import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class DeleteSupplierUseCase {
   private db: DatabaseConnection;
@@ -10,7 +11,15 @@ export class DeleteSupplierUseCase {
 
   public async handle(id: string, options: DeleteOptionsInterface) {
     try {
-      const response = await new DeleteSupplierRepository(this.db).handle(id, options);
+      /**
+       * Request should come from authenticated user
+       */
+      const verifyTokenUserService = new VerifyTokenUseCase(this.db);
+      await verifyTokenUserService.handle(options.authorizationHeader ?? "");
+
+      const response = await new DeleteSupplierRepository(this.db).handle(id, {
+        session: options.session,
+      });
 
       return {
         acknowledged: response.acknowledged,

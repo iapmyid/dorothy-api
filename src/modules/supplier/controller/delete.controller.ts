@@ -9,7 +9,10 @@ export const deleteController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const deleteSupplierUseCase = new DeleteSupplierUseCase(db);
-    await deleteSupplierUseCase.handle(req.params.id, { session });
+    await deleteSupplierUseCase.handle(req.params.id, {
+      session,
+      authorizationHeader: req.headers.authorization ?? "",
+    });
 
     await db.commitTransaction();
 
