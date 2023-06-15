@@ -10,8 +10,6 @@ export const createController = async (req: Request, res: Response, next: NextFu
   try {
     const session = db.startSession();
 
-    console.log(req.body);
-
     db.startTransaction();
 
     const createPurchaseUseCase = new CreatePurchaseUseCase(db);

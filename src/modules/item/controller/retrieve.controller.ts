@@ -13,6 +13,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       _id: result._id,
       name: result.name,
       sellingPrice: result.sellingPrice,
+      itemCategory: result.itemCategory,
       createdAt: result.createdAt,
     });
   } catch (error) {

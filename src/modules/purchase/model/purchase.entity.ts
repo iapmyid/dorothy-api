@@ -9,6 +9,7 @@ export interface PurchaseEntityInterface {
   warehouse_id?: string;
   supplier_id?: string;
   itemCategory_id?: string;
+  item_id?: string;
   code?: string;
   name?: string;
   size?: sizeTypes[];
@@ -31,6 +32,7 @@ export class PurchaseEntity implements PurchaseEntityInterface {
   public warehouse_id?: string;
   public supplier_id?: string;
   public itemCategory_id?: string;
+  public item_id?: string;
   public code?: string;
   public name?: string;
   public size?: sizeTypes[];
@@ -52,6 +54,7 @@ export class PurchaseEntity implements PurchaseEntityInterface {
     this.warehouse_id = purchase.warehouse_id;
     this.supplier_id = purchase.supplier_id;
     this.itemCategory_id = purchase.itemCategory_id;
+    this.item_id = purchase.item_id;
     this.code = purchase.code;
     this.name = purchase.name;
     this.size = purchase.size;

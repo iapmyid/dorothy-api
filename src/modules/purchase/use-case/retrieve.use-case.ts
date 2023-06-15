@@ -9,6 +9,7 @@ export interface ResponseInterface {
   date?: string;
   warehouse?: { name?: string };
   supplier?: { name?: string };
+  item?: { name?: string };
   itemCategory?: { name?: string };
   code?: string;
   name?: string;
@@ -73,6 +74,15 @@ export class RetrievePurchaseUseCase {
           },
         },
         {
+          $lookup: {
+            from: "items",
+            localField: "item_id",
+            foreignField: "_id",
+            pipeline: [{ $project: { name: 1 } }],
+            as: "item",
+          },
+        },
+        {
           $set: {
             warehouse: {
               $arrayElemAt: ["$warehouse", 0],
@@ -93,7 +103,14 @@ export class RetrievePurchaseUseCase {
             },
           },
         },
-        { $unset: ["warehouse_id", "supplier_id", "itemCategory_id"] },
+        {
+          $set: {
+            itemCategory: {
+              $arrayElemAt: ["$item", 0],
+            },
+          },
+        },
+        { $unset: ["warehouse_id", "supplier_id", "itemCategory_id", "item_id"] },
       ];
 
       const response = await new AggregatePurchaseRepository(this.db).handle(
@@ -113,6 +130,7 @@ export class RetrievePurchaseUseCase {
         date: response.data[0].date,
         warehouse: response.data[0].warehouse,
         supplier: response.data[0].supplier,
+        item: response.data[0].item,
         itemCategory: response.data[0].itemCategory,
         code: response.data[0].code,
         name: response.data[0].name,

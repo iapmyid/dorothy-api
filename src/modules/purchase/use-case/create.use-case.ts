@@ -3,6 +3,8 @@ import { PurchaseEntity } from "../model/purchase.entity.js";
 import { CreatePurchaseRepository } from "../model/repository/create.repository.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import { ItemEntity } from "@src/modules/item/model/item.entity.js";
+import { CreateItemRepository } from "@src/modules/item/model/repository/create.repository.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class CreatePurchaseUseCase {
@@ -25,12 +27,26 @@ export class CreatePurchaseUseCase {
       validate(document);
 
       // save to database
+      const itemEntity = objClean(
+        new ItemEntity({
+          itemCategory_id: document.itemCategory_id,
+          name: document.name,
+          sellingPrice: document.sellingPrice,
+          createdAt: new Date(),
+          createdBy_id: authUser._id,
+        })
+      );
+
+      const responseItem = await new CreateItemRepository(this.db).handle(itemEntity, options);
+
+      // save to database
       const purchaseEntity = objClean(
         new PurchaseEntity({
           date: document.date,
           warehouse_id: document.warehouse_id,
           supplier_id: document.supplier_id,
           itemCategory_id: document.itemCategory_id,
+          item_id: responseItem._id,
           code: document.code,
           name: document.name,
           size: document.size,

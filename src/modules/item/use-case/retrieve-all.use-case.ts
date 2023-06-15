@@ -1,5 +1,6 @@
-import { RetrieveAllItemRepository } from "../model/repository/retrieve-all.repository.js";
+import { AggregateItemRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
+import { fields } from "@src/database/mongodb/mongodb-querystring.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class RetrieveAllItemUseCase {
@@ -21,7 +22,40 @@ export class RetrieveAllItemUseCase {
       query.filter = {
         $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
       };
-      const response = await new RetrieveAllItemRepository(this.db).handle(query, options);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const pipeline: any[] = [
+        {
+          $lookup: {
+            from: "itemCategories",
+            localField: "itemCategory_id",
+            foreignField: "_id",
+            pipeline: [{ $project: { name: 1 } }],
+            as: "itemCategory",
+          },
+        },
+        {
+          $set: {
+            itemCategory: {
+              $arrayElemAt: ["$itemCategory", 0],
+            },
+          },
+        },
+        { $unset: ["itemCategory_id"] },
+      ];
+
+      if (query && query.fields) {
+        pipeline.push({ $project: fields(query.fields) });
+      }
+
+      if (query && query.sort) {
+        pipeline.push({ $sort: { createdAt: -1 } });
+      }
+
+      if (query && query.filter) {
+        pipeline.push({ $match: { ...query.filter } });
+      }
+
+      const response = await new AggregateItemRepository(this.db).handle(pipeline, query, options);
 
       return {
         data: response.data,

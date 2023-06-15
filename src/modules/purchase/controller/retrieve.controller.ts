@@ -14,6 +14,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       date: result.date,
       warehouse: result.warehouse,
       supplier: result.supplier,
+      item: result.item,
       itemCategory: result.itemCategory,
       code: result.code,
       name: result.name,

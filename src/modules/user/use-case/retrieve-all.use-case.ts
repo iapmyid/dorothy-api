@@ -1,7 +1,7 @@
-import { RetrieveAllUserRepository } from "../model/repository/retrieve-all.repository.js";
-import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
-import { VerifyTokenUseCase } from "./verify-token.use-case.js";
 import { AggregateUserRepository } from "../model/repository/aggregate.repository.js";
+import { VerifyTokenUseCase } from "./verify-token.use-case.js";
+import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
+import { fields } from "@src/database/mongodb/mongodb-querystring.js";
 
 export class RetrieveAllUserUseCase {
   private db: DatabaseConnection;
@@ -16,13 +16,13 @@ export class RetrieveAllUserUseCase {
        * Request should come from authenticated user
        */
       const verifyTokenUserService = new VerifyTokenUseCase(this.db);
-      await verifyTokenUserService.handle(options.authorizationHeader ?? "";
+      await verifyTokenUserService.handle(options.authorizationHeader ?? "");
 
       const filter = query.filter;
       query.filter = {
         $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
       };
-      
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pipeline: any[] = [
         {

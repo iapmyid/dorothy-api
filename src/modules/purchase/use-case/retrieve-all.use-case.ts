@@ -53,6 +53,15 @@ export class RetrieveAllPurchaseUseCase {
           },
         },
         {
+          $lookup: {
+            from: "items",
+            localField: "item_id",
+            foreignField: "_id",
+            pipeline: [{ $project: { name: 1 } }],
+            as: "item",
+          },
+        },
+        {
           $set: {
             warehouse: {
               $arrayElemAt: ["$warehouse", 0],
@@ -73,7 +82,14 @@ export class RetrieveAllPurchaseUseCase {
             },
           },
         },
-        { $unset: ["warehouse_id", "supplier_id", "itemCategory_id"] },
+        {
+          $set: {
+            item: {
+              $arrayElemAt: ["$item", 0],
+            },
+          },
+        },
+        { $unset: ["warehouse_id", "supplier_id", "itemCategory_id", "item_id"] },
       ];
 
       if (query && query.fields) {

@@ -1,6 +1,6 @@
 export interface ItemEntityInterface {
   _id?: string;
-  category_id?: string;
+  itemCategory_id?: string;
   name?: string;
   sellingPrice?: number;
   createdAt?: Date;
@@ -11,7 +11,7 @@ export interface ItemEntityInterface {
 
 export class ItemEntity implements ItemEntityInterface {
   public _id?: string;
-  public category_id?: string;
+  public itemCategory_id?: string;
   public name?: string;
   public sellingPrice?: number;
   public createdAt?: Date;
@@ -21,7 +21,7 @@ export class ItemEntity implements ItemEntityInterface {
 
   constructor(item: ItemEntityInterface) {
     this._id = item._id;
-    this.category_id = item.category_id;
+    this.itemCategory_id = item.itemCategory_id;
     this.name = item.name;
     this.sellingPrice = item.sellingPrice;
     this.createdAt = item.createdAt;
