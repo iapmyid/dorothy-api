@@ -48,7 +48,7 @@ export class RetrieveAllItemUseCase {
       }
 
       if (query && query.sort) {
-        pipeline.push({ $sort: { createdAt: -1 } });
+        pipeline.push({ $sort: { name: -1 } });
       }
 
       if (query && query.filter) {
