@@ -85,7 +85,6 @@ export class RetrieveAllTransferItemUseCase {
       }
 
       const response = await new AggregateTransferItemRepository(this.db).handle(pipeline, query, options);
-      console.log(response);
 
       return {
         data: response.data,

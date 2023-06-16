@@ -2,7 +2,6 @@ import { objClean } from "@point-hub/express-utils";
 import { ObjectId } from "mongodb";
 import { AggregateTransferItemRepository } from "../model/repository/aggregate.repository.js";
 import { DeleteTransferItemRepository } from "../model/repository/delete.repository.js";
-import { RetrieveTransferItemRepository } from "../model/repository/retrieve.repository.js";
 import DatabaseConnection, { DeleteOptionsInterface, QueryInterface } from "@src/database/connection.js";
 import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
 import { CreateInventoryRepository } from "@src/modules/inventory/model/repository/create.repository.js";

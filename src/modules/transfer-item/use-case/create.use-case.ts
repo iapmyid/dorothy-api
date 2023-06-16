@@ -5,8 +5,6 @@ import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
 import { CreateInventoryRepository } from "@src/modules/inventory/model/repository/create.repository.js";
-import { ItemEntity } from "@src/modules/item/model/item.entity.js";
-import { CreateItemRepository } from "@src/modules/item/model/repository/create.repository.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
 export class CreateTransferItemUseCase {
