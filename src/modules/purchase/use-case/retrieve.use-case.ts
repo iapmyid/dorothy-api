@@ -105,7 +105,7 @@ export class RetrievePurchaseUseCase {
         },
         {
           $set: {
-            itemCategory: {
+            item: {
               $arrayElemAt: ["$item", 0],
             },
           },
