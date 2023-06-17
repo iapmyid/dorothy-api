@@ -1,10 +1,9 @@
-import { AggregateItemRepository } from "../model/repository/aggregate.repository.js";
+import { AggregatePosRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
-import { replaceStringToObjectId } from "@src/database/mongodb/mongodb-helper.js";
 import { fields } from "@src/database/mongodb/mongodb-querystring.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
-export class RetrieveAllItemUseCase {
+export class RetrieveAllPosUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -21,30 +20,40 @@ export class RetrieveAllItemUseCase {
 
       const filter = query.filter;
       query.filter = {
-        $or: [
-          { "itemCategory._id": replaceStringToObjectId(filter.name) },
-          { name: { $regex: filter.name ?? "", $options: "i" } },
-        ],
+        $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
       };
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pipeline: any[] = [
         {
           $lookup: {
-            from: "itemCategories",
-            localField: "itemCategory_id",
+            from: "warehouses",
+            localField: "warehouse_id",
             foreignField: "_id",
             pipeline: [{ $project: { name: 1 } }],
-            as: "itemCategory",
+            as: "warehouse",
+          },
+        },
+        {
+          $lookup: {
+            from: "customers",
+            localField: "customer_id",
+            foreignField: "_id",
+            pipeline: [{ $project: { name: 1 } }],
+            as: "customer",
           },
         },
         {
           $set: {
-            itemCategory: {
-              $arrayElemAt: ["$itemCategory", 0],
+            warehouse: {
+              $arrayElemAt: ["$warehouse", 0],
+            },
+            customer: {
+              $arrayElemAt: ["$customer", 0],
             },
           },
         },
-        { $unset: ["itemCategory_id"] },
+        { $unset: ["warehouse_id", "customer_id"] },
       ];
 
       if (query && query.fields) {
@@ -52,15 +61,15 @@ export class RetrieveAllItemUseCase {
       }
 
       if (query && query.sort) {
-        pipeline.push({ $sort: { name: -1 } });
+        pipeline.push({ $sort: { createdAt: -1 } });
       }
 
       if (query && query.filter) {
-        pipeline.push({ $match: { ...query.filter } });
+        // pipeline.push({ $match: { ...query.filter } });
       }
 
-      const response = await new AggregateItemRepository(this.db).handle(pipeline, query, options);
-
+      const response = await new AggregatePosRepository(this.db).handle(pipeline, query, options);
+      console.log(response);
       return {
         data: response.data,
         pagination: response.pagination,

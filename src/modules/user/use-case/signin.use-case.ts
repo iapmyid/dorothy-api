@@ -52,6 +52,7 @@ export class SigninUseCase {
         name: response.data[0].name as string,
         username: response.data[0].username as string,
         role: response.data[0].role as string,
+        warehouse_id: response.data[0].warehouse_id as string,
         accessToken: accessToken,
         refreshToken: refreshToken,
       };

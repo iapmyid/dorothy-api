@@ -7,6 +7,7 @@ interface ResponseInterface {
   name: string;
   username: string;
   role: string;
+  warehouse_id: string;
   accessToken: string;
   refreshToken: string;
 }
@@ -28,6 +29,7 @@ export const signinController = async (req: Request, res: Response, next: NextFu
       name: result.name,
       username: result.username,
       role: result.role,
+      warehouse_id: result.warehouse_id,
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
     };

@@ -28,6 +28,7 @@ export const verifyTokenController = async (req: Request, res: Response, next: N
       name: result.name,
       username: result.username,
       role: result.role,
+      warehouse_id: result.warehouse_id,
     };
 
     res.status(200).json(response);

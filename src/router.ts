@@ -3,6 +3,7 @@ import customerRouter from "./modules/customer/router.js";
 import inventoryRouter from "./modules/inventory/router.js";
 import itemRouter from "./modules/item/router.js";
 import itemCategoryRouter from "./modules/item-category/router.js";
+import posRouter from "./modules/pos/router.js";
 import purchaseRouter from "./modules/purchase/router.js";
 import stockCorrectionRouter from "./modules/stock-correction/router.js";
 import supplierRouter from "./modules/supplier/router.js";
@@ -27,5 +28,6 @@ export default function () {
   app.use("/v1/transfer-items", transferItemRouter);
   app.use("/v1/stock-corrections", stockCorrectionRouter);
   app.use("/v1/inventories", inventoryRouter);
+  app.use("/v1/pos", posRouter);
   return app;
 }
