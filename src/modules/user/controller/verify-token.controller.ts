@@ -7,6 +7,7 @@ interface ResponseInterface {
   name: string;
   username: string;
   role: string;
+  warehouse_id: string;
 }
 
 export const verifyTokenController = async (req: Request, res: Response, next: NextFunction) => {
