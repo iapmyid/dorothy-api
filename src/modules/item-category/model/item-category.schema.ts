@@ -26,7 +26,7 @@ export async function createCollection(db: IDatabaseAdapter) {
       properties: {
         name: {
           bsonType: "string",
-          description: "The name for the user",
+          description: "The name for the item category",
         },
       },
     });
