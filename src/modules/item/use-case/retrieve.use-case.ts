@@ -5,6 +5,7 @@ import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-
 
 interface ResponseInterface {
   _id: string;
+  barcode?: string;
   name?: string;
   sellingPrice?: number;
   itemCategory: {
@@ -68,6 +69,7 @@ export class RetrieveItemUseCase {
 
       return {
         _id: response.data[0]._id,
+        barcode: response.data[0].barcode,
         name: response.data[0].name,
         sellingPrice: response.data[0].sellingPrice,
         itemCategory: response.data[0].itemCategory,

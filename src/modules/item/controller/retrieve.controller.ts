@@ -11,6 +11,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
 
     res.status(200).json({
       _id: result._id,
+      barcode: result.barcode,
       name: result.name,
       sellingPrice: result.sellingPrice,
       itemCategory: result.itemCategory,

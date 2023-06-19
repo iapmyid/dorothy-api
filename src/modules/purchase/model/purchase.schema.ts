@@ -25,9 +25,9 @@ export async function createCollection(db: IDatabaseAdapter) {
       required: [
         "warehouse_id",
         "supplier_id",
-        "item_category_id",
+        "itemCategory_id",
         "item_id",
-        "code",
+        "barcode",
         "name",
         "size",
         "totalQuantity",

@@ -1,4 +1,5 @@
 import { objClean } from "@point-hub/express-utils";
+import { format } from "date-fns";
 import { PurchaseEntity } from "../model/purchase.entity.js";
 import { CreatePurchaseRepository } from "../model/repository/create.repository.js";
 import { validate } from "../validation/create.validation.js";
@@ -29,11 +30,13 @@ export class CreatePurchaseUseCase {
       validate(document);
 
       const createdAt = new Date();
+      const barcode = format(new Date(), "ddyyIIhhmmss");
 
       // save to database
       const itemEntity = objClean(
         new ItemEntity({
           itemCategory_id: document.itemCategory_id,
+          barcode: barcode,
           name: document.name,
           sellingPrice: document.sellingPrice,
           createdAt: createdAt,
@@ -50,7 +53,7 @@ export class CreatePurchaseUseCase {
           supplier_id: document.supplier_id,
           itemCategory_id: document.itemCategory_id,
           item_id: responseItem._id,
-          code: document.code,
+          barcode: barcode,
           name: document.name,
           size: document.size,
           totalQuantity: document.totalQuantity,
