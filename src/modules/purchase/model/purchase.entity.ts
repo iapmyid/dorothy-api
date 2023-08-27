@@ -13,6 +13,8 @@ export interface PurchaseEntityInterface {
   barcode?: string;
   name?: string;
   size?: sizeTypes[];
+  color?: string;
+  photoUrl?: string;
   totalQuantity?: number;
   price?: number;
   totalPrice?: number;
@@ -36,6 +38,8 @@ export class PurchaseEntity implements PurchaseEntityInterface {
   public barcode?: string;
   public name?: string;
   public size?: sizeTypes[];
+  public color?: string;
+  public photoUrl?: string;
   public totalQuantity?: number;
   public price?: number;
   public totalPrice?: number;
@@ -58,6 +62,8 @@ export class PurchaseEntity implements PurchaseEntityInterface {
     this.barcode = purchase.barcode;
     this.name = purchase.name;
     this.size = purchase.size;
+    this.color = purchase.color;
+    this.photoUrl = purchase.photoUrl;
     this.totalQuantity = purchase.totalQuantity;
     this.price = purchase.price;
     this.totalPrice = purchase.totalPrice;

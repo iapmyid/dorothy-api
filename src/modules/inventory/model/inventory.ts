@@ -3,6 +3,7 @@ export interface InventoryEntityInterface {
   warehouse_id?: string;
   item_id?: string;
   size?: string;
+  color?: string;
   quantity?: number;
   reference?: string;
   reference_id?: string;
@@ -14,6 +15,7 @@ export class InventoryEntity implements InventoryEntityInterface {
   public warehouse_id?: string;
   public item_id?: string;
   public size?: string;
+  public color?: string;
   public quantity?: number;
   public createdAt?: Date;
   public reference?: string;
@@ -24,6 +26,7 @@ export class InventoryEntity implements InventoryEntityInterface {
     this.warehouse_id = inventory.warehouse_id;
     this.item_id = inventory.item_id;
     this.size = inventory.size;
+    this.color = inventory.color;
     this.quantity = inventory.quantity;
     this.reference = inventory.reference;
     this.reference_id = inventory.reference_id;

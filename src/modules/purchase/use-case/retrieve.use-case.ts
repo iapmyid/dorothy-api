@@ -14,6 +14,9 @@ export interface ResponseInterface {
   code?: string;
   name?: string;
   size?: sizeTypes[];
+  color?: string;
+  barcode?: string;
+  photoUrl?: string;
   totalQuantity?: number;
   price?: number;
   totalPrice?: number;
@@ -135,6 +138,9 @@ export class RetrievePurchaseUseCase {
         code: response.data[0].code,
         name: response.data[0].name,
         size: response.data[0].size,
+        color: response.data[0].color,
+        barcode: response.data[0].barcode,
+        photoUrl: response.data[0].photoUrl,
         totalQuantity: response.data[0].totalQuantity,
         price: response.data[0].price,
         totalPrice: response.data[0].totalPrice,

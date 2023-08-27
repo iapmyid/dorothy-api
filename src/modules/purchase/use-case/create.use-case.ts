@@ -56,6 +56,7 @@ export class CreatePurchaseUseCase {
           barcode: barcode,
           name: document.name,
           size: document.size,
+          color: document.color,
           totalQuantity: document.totalQuantity,
           price: document.price,
           totalPrice: document.totalPrice,
@@ -80,6 +81,7 @@ export class CreatePurchaseUseCase {
               reference_id: response._id,
               item_id: responseItem._id,
               size: el.label,
+              color: document.color,
               quantity: el.quantity,
               createdAt: createdAt,
             })
