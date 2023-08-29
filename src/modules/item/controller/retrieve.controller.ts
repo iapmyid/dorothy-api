@@ -13,6 +13,8 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       _id: result._id,
       barcode: result.barcode,
       name: result.name,
+      color: result.color,
+      size: result.size,
       sellingPrice: result.sellingPrice,
       itemCategory: result.itemCategory,
       createdAt: result.createdAt,

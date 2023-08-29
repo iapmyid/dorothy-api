@@ -7,6 +7,8 @@ interface ResponseInterface {
   _id: string;
   barcode?: string;
   name?: string;
+  color?: string;
+  size?: string;
   sellingPrice?: number;
   itemCategory: {
     name: string;
@@ -71,6 +73,8 @@ export class RetrieveItemUseCase {
         _id: response.data[0]._id,
         barcode: response.data[0].barcode,
         name: response.data[0].name,
+        color: response.data[0].color,
+        size: response.data[0].size,
         sellingPrice: response.data[0].sellingPrice,
         itemCategory: response.data[0].itemCategory,
         createdAt: response.data[0].createdAt,

@@ -26,8 +26,6 @@ export async function createCollection(db: IDatabaseAdapter) {
         "warehouse_id",
         "supplier_id",
         "itemCategory_id",
-        "item_id",
-        "barcode",
         "name",
         "size",
         "totalQuantity",

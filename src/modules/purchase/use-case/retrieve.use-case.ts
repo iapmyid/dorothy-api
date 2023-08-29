@@ -13,7 +13,7 @@ export interface ResponseInterface {
   itemCategory?: { name?: string };
   code?: string;
   name?: string;
-  size?: sizeTypes[];
+  size?: string;
   color?: string;
   barcode?: string;
   photoUrl?: string;

@@ -30,20 +30,6 @@ export class CreatePurchaseUseCase {
       validate(document);
 
       const createdAt = new Date();
-      const barcode = format(new Date(), "ddyyIIhhmmss");
-
-      // save to database
-      const itemEntity = objClean(
-        new ItemEntity({
-          itemCategory_id: document.itemCategory_id,
-          barcode: barcode,
-          name: document.name,
-          sellingPrice: document.sellingPrice,
-          createdAt: createdAt,
-          createdBy_id: authUser._id,
-        })
-      );
-      const responseItem = await new CreateItemRepository(this.db).handle(itemEntity, { session: options.session });
 
       // save to database
       const purchaseEntity = objClean(
@@ -52,8 +38,6 @@ export class CreatePurchaseUseCase {
           warehouse_id: document.warehouse_id,
           supplier_id: document.supplier_id,
           itemCategory_id: document.itemCategory_id,
-          item_id: responseItem._id,
-          barcode: barcode,
           name: document.name,
           size: document.size,
           color: document.color,
@@ -72,7 +56,24 @@ export class CreatePurchaseUseCase {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const el of document.size) {
+        const barcode = format(new Date(), "ddyyIIhhmmss");
+
         if (el.quantity) {
+          // save to database
+          const itemEntity = objClean(
+            new ItemEntity({
+              itemCategory_id: document.itemCategory_id,
+              barcode: barcode,
+              name: document.name,
+              size: el.label,
+              color: document.color,
+              sellingPrice: document.sellingPrice,
+              createdAt: createdAt,
+              createdBy_id: authUser._id,
+            })
+          );
+          const responseItem = await new CreateItemRepository(this.db).handle(itemEntity, { session: options.session });
+
           // save to database
           const inventoryEntity = objClean(
             new InventoryEntity({
