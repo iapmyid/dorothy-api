@@ -20,11 +20,19 @@ export class RetrieveAllItemUseCase {
       await verifyTokenUserService.handle(options.authorizationHeader ?? "");
 
       const filter = query.filter;
-      query.filter = {
-        $or: [
+      const filterArr = [];
+      if (!filter.barcode) {
+        filterArr.push(
           { "itemCategory._id": replaceStringToObjectId(filter.name) },
-          { name: { $regex: filter.name ?? "", $options: "i" } },
-        ],
+          { name: { $regex: filter.name ?? "", $options: "i" } }
+        );
+      }
+
+      if (filter.barcode) {
+        filterArr.push({ barcode: filter.barcode });
+      }
+      query.filter = {
+        $or: filterArr,
       };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pipeline: any[] = [

@@ -55,6 +55,7 @@ export class CreatePosUseCase {
               reference_id: response._id,
               item_id: el._id,
               size: el.size,
+              color: el.color,
               quantity: el.quantity * -1,
               createdAt: createdAt,
             })

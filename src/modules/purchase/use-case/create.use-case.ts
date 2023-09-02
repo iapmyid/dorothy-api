@@ -55,7 +55,7 @@ export class CreatePurchaseUseCase {
       const response = await new CreatePurchaseRepository(this.db).handle(purchaseEntity, { session: options.session });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      for (const el of document.size) {
+      for (const [i, el] of document.size.entries()) {
         const barcode = format(new Date(), "ddyyIIhhmmss");
 
         if (el.quantity) {
@@ -63,7 +63,7 @@ export class CreatePurchaseUseCase {
           const itemEntity = objClean(
             new ItemEntity({
               itemCategory_id: document.itemCategory_id,
-              barcode: barcode,
+              barcode: `${barcode}${String(i).padStart(2, "0")}`,
               name: document.name,
               size: el.label,
               color: document.color,
