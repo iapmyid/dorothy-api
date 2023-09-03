@@ -38,6 +38,8 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - create unique attribute "name"`);
     await helper.createUnique(collection, {
       name: -1,
+      size: -1,
+      color: -1,
     });
   } catch (error) {
     throw error;
