@@ -52,7 +52,7 @@ export class CreateTransferItemUseCase {
               warehouse_id: document.warehouseOrigin_id,
               reference: "transfer item",
               reference_id: response._id,
-              item_id: el.item_id,
+              item_id: el._id,
               color: el.color,
               size: el.size,
               quantity: el.quantity * -1,

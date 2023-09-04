@@ -20,7 +20,7 @@ export class RetrieveAllTransferItemUseCase {
 
       const filter = query.filter;
       query.filter = {
-        $or: [{ "item.name": { $regex: filter.item?.name ?? "", $options: "i" } }],
+        $or: [{ "items.name": { $regex: filter.item?.name ?? "", $options: "i" } }],
       };
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,15 +44,6 @@ export class RetrieveAllTransferItemUseCase {
           },
         },
         {
-          $lookup: {
-            from: "items",
-            localField: "item_id",
-            foreignField: "_id",
-            pipeline: [{ $project: { name: 1 } }],
-            as: "item",
-          },
-        },
-        {
           $set: {
             warehouseOrigin: {
               $arrayElemAt: ["$warehouseOrigin", 0],
@@ -62,14 +53,7 @@ export class RetrieveAllTransferItemUseCase {
             },
           },
         },
-        {
-          $set: {
-            item: {
-              $arrayElemAt: ["$item", 0],
-            },
-          },
-        },
-        { $unset: ["warehouseOrigin_id", "warehouseDestination_id", "item_id"] },
+        { $unset: ["warehouseOrigin_id", "warehouseDestination_id"] },
       ];
 
       if (query && query.fields) {
@@ -85,6 +69,7 @@ export class RetrieveAllTransferItemUseCase {
       }
 
       const response = await new AggregateTransferItemRepository(this.db).handle(pipeline, query, options);
+      console.log(response.data);
 
       return {
         data: response.data,

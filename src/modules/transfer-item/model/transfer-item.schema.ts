@@ -22,7 +22,7 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - update schema`);
     await db.updateSchema(collection, {
       bsonType: "object",
-      required: ["warehouseOrigin_id", "warehouseDestination_id", "item_id", "size", "totalQuantity"],
+      required: ["warehouseOrigin_id", "warehouseDestination_id", "items"],
       properties: {},
     });
   } catch (error) {

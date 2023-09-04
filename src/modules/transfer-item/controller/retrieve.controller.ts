@@ -14,9 +14,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       date: result.date,
       warehouseOrigin: result.warehouseOrigin,
       warehouseDestination: result.warehouseDestination,
-      item: result.item,
-      size: result.size,
-      totalQuantity: result.totalQuantity,
+      items: result.items,
       createdAt: result.createdAt,
     });
   } catch (error) {

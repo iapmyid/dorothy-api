@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
 import { AggregateTransferItemRepository } from "../model/repository/aggregate.repository.js";
-import { sizeTypes } from "../model/transfer-item.entity.js";
 import DatabaseConnection, { QueryInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
@@ -9,9 +8,7 @@ export interface ResponseInterface {
   date?: string;
   warehouseOrigin?: { name?: string };
   warehouseDestination?: { name?: string };
-  item?: { name?: string };
-  size?: sizeTypes[];
-  totalQuantity?: number;
+  items?: { name?: string }[];
   createdAt?: Date;
 }
 
@@ -56,15 +53,6 @@ export class RetrieveTransferItemUseCase {
           },
         },
         {
-          $lookup: {
-            from: "items",
-            localField: "item_id",
-            foreignField: "_id",
-            pipeline: [{ $project: { name: 1 } }],
-            as: "item",
-          },
-        },
-        {
           $set: {
             warehouseOrigin: {
               $arrayElemAt: ["$warehouseOrigin", 0],
@@ -72,12 +60,9 @@ export class RetrieveTransferItemUseCase {
             warehouseDestination: {
               $arrayElemAt: ["$warehouseDestination", 0],
             },
-            item: {
-              $arrayElemAt: ["$item", 0],
-            },
           },
         },
-        { $unset: ["warehouseOrigin_id", "warehouseDestination_id", "item_id"] },
+        { $unset: ["warehouseOrigin_id", "warehouseDestination_id"] },
       ];
 
       const response = await new AggregateTransferItemRepository(this.db).handle(
@@ -97,9 +82,7 @@ export class RetrieveTransferItemUseCase {
         date: response.data[0].date,
         warehouseOrigin: response.data[0].warehouseOrigin,
         warehouseDestination: response.data[0].warehouseDestination,
-        item: response.data[0].item,
-        size: response.data[0].size,
-        totalQuantity: response.data[0].totalQuantity,
+        items: response.data[0].items,
         createdAt: response.data[0].createdAt,
       };
     } catch (error) {
