@@ -23,6 +23,10 @@ export class RetrieveAllPurchaseUseCase {
         $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
       };
 
+      if (filter.date) {
+        query.filter.date = filter.date;
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pipeline: any[] = [
         {
@@ -57,7 +61,7 @@ export class RetrieveAllPurchaseUseCase {
             from: "items",
             localField: "item_id",
             foreignField: "_id",
-            pipeline: [{ $project: { name: 1 } }],
+            pipeline: [{ $project: { name: 1, color: 1, size: 1, barcode: 1 } }],
             as: "item",
           },
         },

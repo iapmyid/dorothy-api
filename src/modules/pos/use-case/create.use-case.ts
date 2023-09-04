@@ -44,8 +44,6 @@ export class CreatePosUseCase {
           createdBy_id: authUser._id,
         })
       );
-      console.log(posEntity);
-      console.log(document);
       const response = await new CreatePosRepository(this.db).handle(posEntity, { session: options.session });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

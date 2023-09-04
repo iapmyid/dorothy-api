@@ -9,10 +9,8 @@ interface ResponseInterface {
 export const uploadController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const session = db.startSession();
-    console.log("post purchase");
     const files = req.files as Express.Multer.File[];
 
-    console.log(files);
     db.startTransaction();
 
     const uploadPurchaseUseCase = new UploadPurchaseUseCase(db);

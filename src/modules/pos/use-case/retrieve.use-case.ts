@@ -28,7 +28,6 @@ export class RetrievePosUseCase {
 
   public async handle(id: string, options: RetrieveOptionsInterface): Promise<ResponseInterface> {
     try {
-      console.log(id, id);
       /**
        * Request should come from authenticated user
        */
@@ -105,7 +104,7 @@ export class RetrievePosUseCase {
         } as QueryInterface,
         options
       );
-      console.log(response.data[0]);
+
       return {
         _id: response.data[0]._id,
         date: response.data[0].date,

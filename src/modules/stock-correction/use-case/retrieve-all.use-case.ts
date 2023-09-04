@@ -57,7 +57,6 @@ export class RetrieveAllStockCorrectionUseCase {
       }
 
       const response = await new AggregateStockCorrectionRepository(this.db).handle(pipeline, query, options);
-      console.log(response.data);
 
       return {
         data: response.data,

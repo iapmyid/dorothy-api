@@ -69,7 +69,6 @@ export class RetrieveAllPosUseCase {
       }
 
       const response = await new AggregatePosRepository(this.db).handle(pipeline, query, options);
-      console.log(response);
       return {
         data: response.data,
         pagination: response.pagination,

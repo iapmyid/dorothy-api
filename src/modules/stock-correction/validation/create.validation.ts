@@ -4,7 +4,6 @@ import { DocumentInterface } from "@src/database/connection.js";
 
 // https://github.com/mikeerickson/validatorjs
 export const validate = (document: DocumentInterface) => {
-  console.log(document);
   try {
     const validation = new Validatorjs(document, {
       warehouse_id: "required|string",

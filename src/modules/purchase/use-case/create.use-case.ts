@@ -2,6 +2,8 @@ import { objClean } from "@point-hub/express-utils";
 import { format } from "date-fns";
 import { PurchaseEntity } from "../model/purchase.entity.js";
 import { CreatePurchaseRepository } from "../model/repository/create.repository.js";
+import { UpdateManyPurchaseRepository } from "../model/repository/update-many.repository.js";
+import { UpdatePurchaseRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
@@ -73,6 +75,25 @@ export class CreatePurchaseUseCase {
             })
           );
           const responseItem = await new CreateItemRepository(this.db).handle(itemEntity, { session: options.session });
+
+          // save to database
+
+          await new UpdateManyPurchaseRepository(this.db).handle(
+            {
+              _id: response._id,
+              name: document.name,
+              color: document.color,
+              "size.label": el.label,
+            },
+            {
+              $set: {
+                "size.$.barcode": `${barcode}${String(i).padStart(2, "0")}`,
+              },
+            },
+            {
+              session: options.session,
+            }
+          );
 
           // save to database
           const inventoryEntity = objClean(

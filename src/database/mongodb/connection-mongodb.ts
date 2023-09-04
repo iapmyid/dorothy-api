@@ -316,7 +316,11 @@ export default class MongoDbConnection implements IDatabaseAdapter {
 
     const updateManyOptions = options as UpdateOptions;
     try {
-      const result = await this._collection.updateMany(filter, updateFilter, updateManyOptions);
+      const result = await this._collection.updateMany(
+        replaceStringToObjectId(filter),
+        replaceStringToObjectId(updateFilter),
+        updateManyOptions
+      );
 
       return {
         acknowledged: result.acknowledged,
