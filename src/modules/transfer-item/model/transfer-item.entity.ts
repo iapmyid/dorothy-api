@@ -17,8 +17,10 @@ export interface TransferItemEntityInterface {
   items?: ItemInterface[];
   createdAt?: Date;
   updatedAt?: Date;
+  receivedAt?: Date;
   createdBy_id?: string;
   updatedBy_id?: string;
+  receivedBy_id?: string;
 }
 
 export class TransferItemEntity implements TransferItemEntityInterface {
@@ -30,8 +32,10 @@ export class TransferItemEntity implements TransferItemEntityInterface {
   public items?: ItemInterface[];
   public createdAt?: Date;
   public updatedAt?: Date;
+  public receivedAt?: Date;
   public createdBy_id?: string;
   public updatedBy_id?: string;
+  public receivedBy_id?: string;
 
   constructor(transferItem: TransferItemEntityInterface) {
     this._id = transferItem._id;
@@ -41,8 +45,10 @@ export class TransferItemEntity implements TransferItemEntityInterface {
     this.warehouseDestination_id = transferItem.warehouseDestination_id;
     this.items = transferItem.items;
     this.createdAt = transferItem.createdAt;
+    this.receivedAt = transferItem.receivedAt;
     this.updatedAt = transferItem.updatedAt;
     this.createdBy_id = transferItem.createdBy_id;
     this.updatedBy_id = transferItem.updatedBy_id;
+    this.receivedBy_id = transferItem.receivedBy_id;
   }
 }

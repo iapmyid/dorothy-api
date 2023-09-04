@@ -10,6 +10,7 @@ export interface ResponseInterface {
   warehouseDestination?: { name?: string };
   items?: { name?: string }[];
   createdAt?: Date;
+  receivedAt?: Date;
 }
 
 export class RetrieveTransferItemUseCase {
@@ -84,6 +85,7 @@ export class RetrieveTransferItemUseCase {
         warehouseDestination: response.data[0].warehouseDestination,
         items: response.data[0].items,
         createdAt: response.data[0].createdAt,
+        receivedAt: response.data[0].receivedAt,
       };
     } catch (error) {
       throw error;

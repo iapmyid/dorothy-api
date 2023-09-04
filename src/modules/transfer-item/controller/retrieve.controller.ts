@@ -16,6 +16,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       warehouseDestination: result.warehouseDestination,
       items: result.items,
       createdAt: result.createdAt,
+      receivedAt: result.receivedAt,
     });
   } catch (error) {
     next(error);
