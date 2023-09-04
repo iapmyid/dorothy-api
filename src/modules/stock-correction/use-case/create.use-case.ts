@@ -33,10 +33,7 @@ export class CreateStockCorrectionUseCase {
         new StockCorrectionEntity({
           date: document.date,
           warehouse_id: document.warehouse_id,
-          item_id: document.item_id,
-          size: document.size,
-          totalQuantity: document.totalQuantity,
-          notes: document.notes,
+          items: document.items,
           createdAt: createdAt,
           createdBy_id: authUser._id,
         })
@@ -46,7 +43,7 @@ export class CreateStockCorrectionUseCase {
       });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      for (const el of document.size) {
+      for (const el of document.items) {
         if (el.quantity) {
           // save to database
           const inventoryEntity = objClean(
@@ -54,8 +51,9 @@ export class CreateStockCorrectionUseCase {
               warehouse_id: document.warehouse_id,
               reference: "stock correction",
               reference_id: response._id,
-              item_id: document.item_id,
-              size: el.label,
+              item_id: el._id,
+              color: el.color,
+              size: el.size,
               quantity: el.quantity * -1,
               createdAt: createdAt,
             })

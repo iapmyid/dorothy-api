@@ -4,13 +4,15 @@ import { DocumentInterface } from "@src/database/connection.js";
 
 // https://github.com/mikeerickson/validatorjs
 export const validate = (document: DocumentInterface) => {
+  console.log(document);
   try {
     const validation = new Validatorjs(document, {
       warehouse_id: "required|string",
-      item_id: "required|string",
-      "size.*.label": "required|string",
-      "size.*.quantity": "required|number|min:0",
-      totalQuantity: "required|number|min:0",
+      "items.*._id": "required|string",
+      "items.*.name": "required|string",
+      "items.*.color": "required|string",
+      "items.*.size": "required|string",
+      "items.*.quantity": "required|number",
     });
 
     if (validation.fails()) {

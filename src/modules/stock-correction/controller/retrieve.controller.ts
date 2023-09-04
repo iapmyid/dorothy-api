@@ -13,10 +13,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       _id: result._id,
       date: result.date,
       warehouse: result.warehouse,
-      item: result.item,
-      size: result.size,
-      totalQuantity: result.totalQuantity,
-      notes: result.notes,
+      items: result.items,
       createdAt: result.createdAt,
     });
   } catch (error) {

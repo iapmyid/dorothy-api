@@ -1,16 +1,19 @@
-export interface sizeTypes {
-  label?: string;
+export interface ItemInterface {
+  _id?: string;
+  name?: string;
+  size?: string;
+  color?: string;
   quantity?: number;
+  price?: number;
+  total?: number;
 }
 
 export interface StockCorrectionEntityInterface {
   _id?: string;
+  received_id?: string;
   date?: string;
   warehouse_id?: string;
-  item_id?: string;
-  size?: sizeTypes[];
-  totalQuantity?: number;
-  notes?: string;
+  items?: ItemInterface[];
   createdAt?: Date;
   updatedAt?: Date;
   createdBy_id?: string;
@@ -19,12 +22,10 @@ export interface StockCorrectionEntityInterface {
 
 export class StockCorrectionEntity implements StockCorrectionEntityInterface {
   public _id?: string;
+  public received_id?: string;
   public date?: string;
   public warehouse_id?: string;
-  public item_id?: string;
-  public size?: sizeTypes[];
-  public totalQuantity?: number;
-  public notes?: string;
+  public items?: ItemInterface[];
   public createdAt?: Date;
   public updatedAt?: Date;
   public createdBy_id?: string;
@@ -32,12 +33,10 @@ export class StockCorrectionEntity implements StockCorrectionEntityInterface {
 
   constructor(stockCorrection: StockCorrectionEntityInterface) {
     this._id = stockCorrection._id;
+    this.received_id = stockCorrection.received_id;
     this.date = stockCorrection.date;
     this.warehouse_id = stockCorrection.warehouse_id;
-    this.item_id = stockCorrection.item_id;
-    this.size = stockCorrection.size;
-    this.totalQuantity = stockCorrection.totalQuantity;
-    this.notes = stockCorrection.notes;
+    this.items = stockCorrection.items;
     this.createdAt = stockCorrection.createdAt;
     this.updatedAt = stockCorrection.updatedAt;
     this.createdBy_id = stockCorrection.createdBy_id;

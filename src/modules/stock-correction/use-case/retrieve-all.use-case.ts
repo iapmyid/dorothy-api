@@ -20,7 +20,7 @@ export class RetrieveAllStockCorrectionUseCase {
 
       const filter = query.filter;
       query.filter = {
-        $or: [{ "item.name": { $regex: filter.item?.name ?? "", $options: "i" } }],
+        $or: [{ "items.name": { $regex: filter.item?.name ?? "", $options: "i" } }],
       };
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,25 +35,13 @@ export class RetrieveAllStockCorrectionUseCase {
           },
         },
         {
-          $lookup: {
-            from: "items",
-            localField: "item_id",
-            foreignField: "_id",
-            pipeline: [{ $project: { name: 1 } }],
-            as: "item",
-          },
-        },
-        {
           $set: {
             warehouse: {
               $arrayElemAt: ["$warehouse", 0],
             },
-            item: {
-              $arrayElemAt: ["$item", 0],
-            },
           },
         },
-        { $unset: ["warehouse_id", "item_id"] },
+        { $unset: ["warehouse_id"] },
       ];
 
       if (query && query.fields) {
@@ -69,6 +57,7 @@ export class RetrieveAllStockCorrectionUseCase {
       }
 
       const response = await new AggregateStockCorrectionRepository(this.db).handle(pipeline, query, options);
+      console.log(response.data);
 
       return {
         data: response.data,

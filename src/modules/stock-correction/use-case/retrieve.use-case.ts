@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
 import { AggregateStockCorrectionRepository } from "../model/repository/aggregate.repository.js";
-import { sizeTypes } from "../model/stock-correction.entity.js";
 import DatabaseConnection, { QueryInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
@@ -8,10 +7,7 @@ export interface ResponseInterface {
   _id: string;
   date?: string;
   warehouse?: { name?: string };
-  item?: { name?: string };
-  size?: sizeTypes[];
-  totalQuantity?: number;
-  notes?: string;
+  items?: { name?: string }[];
   createdAt?: Date;
 }
 
@@ -47,25 +43,13 @@ export class RetrieveStockCorrectionUseCase {
           },
         },
         {
-          $lookup: {
-            from: "items",
-            localField: "item_id",
-            foreignField: "_id",
-            pipeline: [{ $project: { name: 1 } }],
-            as: "item",
-          },
-        },
-        {
           $set: {
             warehouse: {
               $arrayElemAt: ["$warehouse", 0],
             },
-            item: {
-              $arrayElemAt: ["$item", 0],
-            },
           },
         },
-        { $unset: ["warehouse_id", "item_id"] },
+        { $unset: ["warehouse_id"] },
       ];
 
       const response = await new AggregateStockCorrectionRepository(this.db).handle(
@@ -84,10 +68,7 @@ export class RetrieveStockCorrectionUseCase {
         _id: response.data[0]._id,
         date: response.data[0].date,
         warehouse: response.data[0].warehouse,
-        item: response.data[0].item,
-        size: response.data[0].size,
-        totalQuantity: response.data[0].totalQuantity,
-        notes: response.data[0].notes,
+        items: response.data[0].items,
         createdAt: response.data[0].createdAt,
       };
     } catch (error) {

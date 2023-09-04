@@ -41,25 +41,13 @@ export class DeleteStockCorrectionUseCase {
           },
         },
         {
-          $lookup: {
-            from: "items",
-            localField: "item_id",
-            foreignField: "_id",
-            pipeline: [{ $project: { name: 1 } }],
-            as: "item",
-          },
-        },
-        {
           $set: {
             warehouse: {
               $arrayElemAt: ["$warehouse", 0],
             },
-            item: {
-              $arrayElemAt: ["$item", 0],
-            },
           },
         },
-        { $unset: ["warehouse_id", "item_id"] },
+        { $unset: ["warehouse_id"] },
       ];
 
       const responseStockCorrection = await new AggregateStockCorrectionRepository(this.db).handle(
@@ -89,7 +77,7 @@ export class DeleteStockCorrectionUseCase {
               reference_id: stockCorrection._id,
               item_id: stockCorrection.item._id,
               size: el.label,
-              quantity: el.quantity * -1,
+              quantity: el.quantity,
               createdAt: createdAt,
             })
           );
