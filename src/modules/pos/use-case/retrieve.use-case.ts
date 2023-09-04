@@ -10,6 +10,8 @@ export interface ResponseInterface {
   customer?: { name?: string };
   items?: { _id: string; name?: string; size?: string; quantity: number; price?: number; total?: number };
   totalQuantity?: number;
+  subtotal?: number;
+  discount?: number;
   totalPrice?: number;
   paymentType?: string;
   createdBy_id?: string;
@@ -111,7 +113,9 @@ export class RetrievePosUseCase {
         customer: response.data[0].customer,
         items: response.data[0].items,
         totalQuantity: response.data[0].totalQuantity,
-        totalPrice: response.data[0].totalPrice,
+        subtotal: response.data[0].totalPrice,
+        discount: response.data[0].discount ?? 0,
+        totalPrice: response.data[0].totalPrice - response.data[0].discount ?? 0,
         paymentType: response.data[0].paymentType,
         createdAt: response.data[0].createdAt,
         createdBy: response.data[0].createdBy,

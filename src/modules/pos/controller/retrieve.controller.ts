@@ -16,6 +16,8 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       customer: result.customer,
       items: result.items,
       totalQuantity: result.totalQuantity,
+      subtotal: result.subtotal,
+      discount: result.discount,
       totalPrice: result.totalPrice,
       paymentType: result.paymentType,
       createdAt: result.createdAt,
