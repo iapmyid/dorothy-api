@@ -47,7 +47,7 @@ export class MutationInventoryUseCase {
             from: "items",
             localField: "item_id",
             foreignField: "_id",
-            pipeline: [{ $project: { name: 1 } }],
+            pipeline: [{ $project: { name: 1, barcode: 1, color: 1, size: 1 } }],
             as: "item",
           },
         },
