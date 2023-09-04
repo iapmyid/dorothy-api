@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { StockInventoryUseCase } from "../use-case/stock.use-case.js";
+import { RetrieveAllStockOpnameUseCase } from "../use-case/retrieve-all.use-case.js";
 import { QueryInterface } from "@src/database/connection.js";
 import { db } from "@src/database/database.js";
 
-export const stockController = async (req: Request, res: Response, next: NextFunction) => {
+export const retrieveAllController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const query: QueryInterface = {
       fields: (req.query.fields as string) ?? "",
@@ -13,8 +13,8 @@ export const stockController = async (req: Request, res: Response, next: NextFun
       sort: (req.query.sort as string) ?? "",
     };
 
-    const stockInventoryUseCase = new StockInventoryUseCase(db);
-    const result = await stockInventoryUseCase.handle(query as unknown as QueryInterface, {
+    const createStockOpnameUseCase = new RetrieveAllStockOpnameUseCase(db);
+    const result = await createStockOpnameUseCase.handle(query as unknown as QueryInterface, {
       authorizationHeader: req.headers.authorization ?? "",
     });
 

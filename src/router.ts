@@ -6,6 +6,7 @@ import itemCategoryRouter from "./modules/item-category/router.js";
 import posRouter from "./modules/pos/router.js";
 import purchaseRouter from "./modules/purchase/router.js";
 import stockCorrectionRouter from "./modules/stock-correction/router.js";
+import stockOpnameRouter from "./modules/stock-opname/router.js";
 import supplierRouter from "./modules/supplier/router.js";
 import transferItemRouter from "./modules/transfer-item/router.js";
 import userRouter from "./modules/user/router.js";
@@ -27,6 +28,7 @@ export default function () {
   app.use("/v1/purchases", purchaseRouter);
   app.use("/v1/transfer-items", transferItemRouter);
   app.use("/v1/stock-corrections", stockCorrectionRouter);
+  app.use("/v1/stock-opnames", stockOpnameRouter);
   app.use("/v1/inventories", inventoryRouter);
   app.use("/v1/pos", posRouter);
   return app;
