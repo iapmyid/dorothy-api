@@ -34,9 +34,7 @@ export class CreateTransferItemUseCase {
           date: document.date,
           warehouseOrigin_id: document.warehouseOrigin_id,
           warehouseDestination_id: document.warehouseDestination_id,
-          item_id: document.item_id,
-          size: document.size,
-          totalQuantity: document.totalQuantity,
+          items: document.items,
           createdAt: createdAt,
           createdBy_id: authUser._id,
         })
@@ -46,7 +44,7 @@ export class CreateTransferItemUseCase {
       });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      for (const el of document.size) {
+      for (const el of document.items) {
         if (el.quantity) {
           // save to database
           const inventoryEntity = objClean(
@@ -54,27 +52,14 @@ export class CreateTransferItemUseCase {
               warehouse_id: document.warehouseOrigin_id,
               reference: "transfer item",
               reference_id: response._id,
-              item_id: document.item_id,
-              size: el.label,
+              item_id: el.item_id,
+              color: el.color,
+              size: el.size,
               quantity: el.quantity * -1,
               createdAt: createdAt,
             })
           );
           await new CreateInventoryRepository(this.db).handle(inventoryEntity, { session: options.session });
-
-          // save to database
-          const inventoryEntityDestination = objClean(
-            new InventoryEntity({
-              warehouse_id: document.warehouseDestination_id,
-              reference: "transfer item",
-              reference_id: response._id,
-              item_id: document.item_id,
-              size: el.label,
-              quantity: el.quantity,
-              createdAt: createdAt,
-            })
-          );
-          await new CreateInventoryRepository(this.db).handle(inventoryEntityDestination, { session: options.session });
         }
       }
       return {
