@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import brancExpenseRouter from "./modules/branch-expense/router.js";
 import customerRouter from "./modules/customer/router.js";
+import financeRouter from "./modules/finance/router.js";
 import inventoryRouter from "./modules/inventory/router.js";
 import itemRouter from "./modules/item/router.js";
 import itemCategoryRouter from "./modules/item-category/router.js";
@@ -32,6 +33,7 @@ export default function () {
   app.use("/v1/stock-opnames", stockOpnameRouter);
   app.use("/v1/branch-expenses", brancExpenseRouter);
   app.use("/v1/inventories", inventoryRouter);
+  app.use("/v1/finances", financeRouter);
   app.use("/v1/pos", posRouter);
   return app;
 }

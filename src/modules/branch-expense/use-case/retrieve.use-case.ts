@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { AggregateStockCorrectionRepository } from "../model/repository/aggregate.repository.js";
+import { AggregateBranchExpenseRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
@@ -11,7 +11,7 @@ export interface ResponseInterface {
   createdAt?: Date;
 }
 
-export class RetrieveStockCorrectionUseCase {
+export class RetrieveBranchExpenseUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -52,7 +52,7 @@ export class RetrieveStockCorrectionUseCase {
         { $unset: ["warehouse_id"] },
       ];
 
-      const response = await new AggregateStockCorrectionRepository(this.db).handle(
+      const response = await new AggregateBranchExpenseRepository(this.db).handle(
         pipeline,
         {
           fields: "",

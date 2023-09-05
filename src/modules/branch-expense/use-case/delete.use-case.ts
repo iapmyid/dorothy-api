@@ -1,13 +1,13 @@
 import { objClean } from "@point-hub/express-utils";
 import { ObjectId } from "mongodb";
-import { AggregateStockCorrectionRepository } from "../model/repository/aggregate.repository.js";
-import { DeleteStockCorrectionRepository } from "../model/repository/delete.repository.js";
+import { AggregateBranchExpenseRepository } from "../model/repository/aggregate.repository.js";
+import { DeleteBranchExpenseRepository } from "../model/repository/delete.repository.js";
 import DatabaseConnection, { DeleteOptionsInterface, QueryInterface } from "@src/database/connection.js";
 import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
 import { CreateInventoryRepository } from "@src/modules/inventory/model/repository/create.repository.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
-export class DeleteStockCorrectionUseCase {
+export class DeleteBranchExpenseUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -50,7 +50,7 @@ export class DeleteStockCorrectionUseCase {
         { $unset: ["warehouse_id"] },
       ];
 
-      const responseStockCorrection = await new AggregateStockCorrectionRepository(this.db).handle(
+      const responseBranchExpense = await new AggregateBranchExpenseRepository(this.db).handle(
         pipeline,
         {
           fields: "",
@@ -62,9 +62,9 @@ export class DeleteStockCorrectionUseCase {
         options
       );
 
-      const stockCorrection = responseStockCorrection.data[0];
+      const stockCorrection = responseBranchExpense.data[0];
 
-      const response = await new DeleteStockCorrectionRepository(this.db).handle(id, options);
+      const response = await new DeleteBranchExpenseRepository(this.db).handle(id, options);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const el of stockCorrection.size) {

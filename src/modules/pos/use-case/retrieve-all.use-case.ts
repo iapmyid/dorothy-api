@@ -39,7 +39,7 @@ export class RetrieveAllPosUseCase {
           $and: filters,
         };
       } else {
-        query.filter = undefined;
+        query.filter = {};
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

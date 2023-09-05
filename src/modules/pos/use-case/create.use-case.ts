@@ -3,6 +3,8 @@ import { PosEntity } from "../model/pos.entity.js";
 import { CreatePosRepository } from "../model/repository/create.repository.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import { FinanceEntity } from "@src/modules/finance/model/finance.entity.js";
+import { CreateFinanceRepository } from "@src/modules/finance/model/repository/create.repository.js";
 import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
 import { CreateInventoryRepository } from "@src/modules/inventory/model/repository/create.repository.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
@@ -45,6 +47,19 @@ export class CreatePosUseCase {
         })
       );
       const response = await new CreatePosRepository(this.db).handle(posEntity, { session: options.session });
+
+      // save to database
+      const financeEntity = objClean(
+        new FinanceEntity({
+          date: document.date,
+          description: `pos`,
+          value: document.totalPrice,
+          reference: "pos",
+          reference_id: response._id,
+          createdAt: createdAt,
+        })
+      );
+      await new CreateFinanceRepository(this.db).handle(financeEntity, { session: options.session });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const el of document.items) {

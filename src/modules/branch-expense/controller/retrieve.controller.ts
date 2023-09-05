@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { RetrieveStockCorrectionUseCase } from "../use-case/retrieve.use-case.js";
+import { RetrieveBranchExpenseUseCase } from "../use-case/retrieve.use-case.js";
 import { db } from "@src/database/database.js";
 
 export const retrieveController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const createStockCorrectionUseCase = new RetrieveStockCorrectionUseCase(db);
-    const result = await createStockCorrectionUseCase.handle(req.params.id, {
+    const createBranchExpenseUseCase = new RetrieveBranchExpenseUseCase(db);
+    const result = await createBranchExpenseUseCase.handle(req.params.id, {
       authorizationHeader: req.headers.authorization ?? "",
     });
 

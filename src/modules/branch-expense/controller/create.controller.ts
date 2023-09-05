@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateStockCorrectionUseCase } from "../use-case/create.use-case.js";
+import { CreateBranchExpenseUseCase } from "../use-case/create.use-case.js";
 import { db } from "@src/database/database.js";
 
 interface ResponseInterface {
@@ -12,8 +12,8 @@ export const createController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    const createStockCorrectionUseCase = new CreateStockCorrectionUseCase(db);
-    const result = await createStockCorrectionUseCase.handle(req.body, {
+    const createBranchExpenseUseCase = new CreateBranchExpenseUseCase(db);
+    const result = await createBranchExpenseUseCase.handle(req.body, {
       session,
       authorizationHeader: req.headers.authorization ?? "",
     });

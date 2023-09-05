@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { DeleteStockCorrectionUseCase } from "../use-case/delete.use-case.js";
+import { DeleteBranchExpenseUseCase } from "../use-case/delete.use-case.js";
 import { db } from "@src/database/database.js";
 
 export const deleteController = async (req: Request, res: Response, next: NextFunction) => {
@@ -8,8 +8,8 @@ export const deleteController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    const deleteStockCorrectionUseCase = new DeleteStockCorrectionUseCase(db);
-    await deleteStockCorrectionUseCase.handle(req.params.id, {
+    const deleteBranchExpenseUseCase = new DeleteBranchExpenseUseCase(db);
+    await deleteBranchExpenseUseCase.handle(req.params.id, {
       session,
       authorizationHeader: req.headers.authorization ?? "",
     });

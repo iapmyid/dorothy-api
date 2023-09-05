@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { RetrieveAllBranchExpenseUseCase } from "../use-case/retrieve-all.use-case.js";
+import { RetrieveAllFinanceUseCase } from "../use-case/retrieve-all.use-case.js";
 import { QueryInterface } from "@src/database/connection.js";
 import { db } from "@src/database/database.js";
 
@@ -13,8 +13,8 @@ export const retrieveAllController = async (req: Request, res: Response, next: N
       sort: (req.query.sort as string) ?? "",
     };
 
-    const createBranchExpenseUseCase = new RetrieveAllBranchExpenseUseCase(db);
-    const result = await createBranchExpenseUseCase.handle(query as unknown as QueryInterface, {
+    const retrieveAllFinanceUseCase = new RetrieveAllFinanceUseCase(db);
+    const result = await retrieveAllFinanceUseCase.handle(query as unknown as QueryInterface, {
       authorizationHeader: req.headers.authorization ?? "",
     });
 

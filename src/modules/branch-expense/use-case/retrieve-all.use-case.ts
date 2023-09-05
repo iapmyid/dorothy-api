@@ -1,9 +1,9 @@
-import { AggregateStockCorrectionRepository } from "../model/repository/aggregate.repository.js";
+import { AggregateBranchExpenseRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 import { fields } from "@src/database/mongodb/mongodb-querystring.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
-export class RetrieveAllStockCorrectionUseCase {
+export class RetrieveAllBranchExpenseUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -54,7 +54,7 @@ export class RetrieveAllStockCorrectionUseCase {
         pipeline.push({ $match: { ...query.filter } });
       }
 
-      const response = await new AggregateStockCorrectionRepository(this.db).handle(pipeline, query, options);
+      const response = await new AggregateBranchExpenseRepository(this.db).handle(pipeline, query, options);
 
       return {
         data: response.data,

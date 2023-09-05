@@ -3,7 +3,7 @@ export interface ItemInterface {
   value?: number;
 }
 
-export interface StockCorrectionEntityInterface {
+export interface BranchExpenseEntityInterface {
   _id?: string;
   date?: string;
   warehouse_id?: string;
@@ -14,7 +14,7 @@ export interface StockCorrectionEntityInterface {
   updatedBy_id?: string;
 }
 
-export class StockCorrectionEntity implements StockCorrectionEntityInterface {
+export class BranchExpenseEntity implements BranchExpenseEntityInterface {
   public _id?: string;
   public date?: string;
   public warehouse_id?: string;
@@ -24,7 +24,7 @@ export class StockCorrectionEntity implements StockCorrectionEntityInterface {
   public createdBy_id?: string;
   public updatedBy_id?: string;
 
-  constructor(stockCorrection: StockCorrectionEntityInterface) {
+  constructor(stockCorrection: BranchExpenseEntityInterface) {
     this._id = stockCorrection._id;
     this.date = stockCorrection.date;
     this.warehouse_id = stockCorrection.warehouse_id;

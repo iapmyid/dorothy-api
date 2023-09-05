@@ -6,6 +6,8 @@ import { UpdateManyPurchaseRepository } from "../model/repository/update-many.re
 import { UpdatePurchaseRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import { FinanceEntity } from "@src/modules/finance/model/finance.entity.js";
+import { CreateFinanceRepository } from "@src/modules/finance/model/repository/create.repository.js";
 import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
 import { CreateInventoryRepository } from "@src/modules/inventory/model/repository/create.repository.js";
 import { ItemEntity } from "@src/modules/item/model/item.entity.js";
@@ -55,6 +57,19 @@ export class CreatePurchaseUseCase {
         })
       );
       const response = await new CreatePurchaseRepository(this.db).handle(purchaseEntity, { session: options.session });
+
+      // save to database
+      const financeEntity = objClean(
+        new FinanceEntity({
+          date: document.date,
+          description: `purchase ${document.name} - ${document.color}`,
+          value: document.totalPrice * -1,
+          reference: "purchase",
+          reference_id: response._id,
+          createdAt: createdAt,
+        })
+      );
+      await new CreateFinanceRepository(this.db).handle(financeEntity, { session: options.session });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const [i, el] of document.size.entries()) {

@@ -1,11 +1,11 @@
 import DatabaseConnection, { DeleteOptionsInterface, DeleteResultInterface } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
 
-export class DeleteBranchExpenseRepository {
+export class DeleteFinanceRepository {
   public databaseManager;
 
   constructor(databaseConnection: DatabaseConnection) {
-    this.databaseManager = new DatabaseManager(databaseConnection, "branchExpenses");
+    this.databaseManager = new DatabaseManager(databaseConnection, "finances");
   }
 
   public async handle(id: string, options?: DeleteOptionsInterface): Promise<DeleteResultInterface> {

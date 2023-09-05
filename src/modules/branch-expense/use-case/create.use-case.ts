@@ -1,13 +1,13 @@
 import { objClean } from "@point-hub/express-utils";
-import { StockCorrectionEntity } from "../model/branch-expense.entity.js";
-import { CreateStockCorrectionRepository } from "../model/repository/create.repository.js";
+import { BranchExpenseEntity } from "../model/branch-expense.entity.js";
+import { CreateBranchExpenseRepository } from "../model/repository/create.repository.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
-import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
-import { CreateInventoryRepository } from "@src/modules/inventory/model/repository/create.repository.js";
+import { FinanceEntity } from "@src/modules/finance/model/finance.entity.js";
+import { CreateFinanceRepository } from "@src/modules/finance/model/repository/create.repository.js";
 import { VerifyTokenUseCase } from "@src/modules/user/use-case/verify-token.use-case.js";
 
-export class CreateStockCorrectionUseCase {
+export class CreateBranchExpenseUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -30,7 +30,7 @@ export class CreateStockCorrectionUseCase {
 
       // save to database
       const stockCorrectionEntity = objClean(
-        new StockCorrectionEntity({
+        new BranchExpenseEntity({
           date: document.date,
           warehouse_id: document.warehouse_id,
           items: document.items,
@@ -38,28 +38,24 @@ export class CreateStockCorrectionUseCase {
           createdBy_id: authUser._id,
         })
       );
-      const response = await new CreateStockCorrectionRepository(this.db).handle(stockCorrectionEntity, {
+      const response = await new CreateBranchExpenseRepository(this.db).handle(stockCorrectionEntity, {
         session: options.session,
       });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const el of document.items) {
-        if (el.quantity) {
-          // save to database
-          // const inventoryEntity = objClean(
-          //   new InventoryEntity({
-          //     warehouse_id: document.warehouse_id,
-          //     reference: "stock correction",
-          //     reference_id: response._id,
-          //     item_id: el._id,
-          //     color: el.color,
-          //     size: el.size,
-          //     quantity: el.quantity * -1,
-          //     createdAt: createdAt,
-          //   })
-          // );
-          // await new CreateInventoryRepository(this.db).handle(inventoryEntity, { session: options.session });
-        }
+        // save to database
+        const financeEntity = objClean(
+          new FinanceEntity({
+            date: document.date,
+            description: `expense - ${el.description}`,
+            value: el.value * -1,
+            reference: "branch-expense",
+            reference_id: response._id,
+            createdAt: createdAt,
+          })
+        );
+        await new CreateFinanceRepository(this.db).handle(financeEntity, { session: options.session });
       }
       return {
         acknowledged: response.acknowledged,

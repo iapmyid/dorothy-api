@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 import Factory from "@point-hub/express-factory";
-import { CreateManyStockCorrectionRepository } from "./repository/create-many.repository.js";
-import { CreateStockCorrectionRepository } from "./repository/create.repository.js";
-import { StockCorrectionEntityInterface } from "./branch-expense.entity.js";
+import { BranchExpenseEntityInterface } from "./branch-expense.entity.js";
+import { CreateManyBranchExpenseRepository } from "./repository/create-many.repository.js";
+import { CreateBranchExpenseRepository } from "./repository/create.repository.js";
 import { db } from "@src/database/database.js";
 
-export default class StockCorrectionFactory extends Factory<StockCorrectionEntityInterface> {
+export default class BranchExpenseFactory extends Factory<BranchExpenseEntityInterface> {
   definition() {
     return {
       name: faker.name.fullName(),
@@ -14,12 +14,12 @@ export default class StockCorrectionFactory extends Factory<StockCorrectionEntit
   }
 
   async create() {
-    const stockCorrectionRepository = new CreateStockCorrectionRepository(db);
+    const stockCorrectionRepository = new CreateBranchExpenseRepository(db);
     return await stockCorrectionRepository.handle(this.makeOne());
   }
 
   async createMany(count: number) {
-    const stockCorrectionRepository = new CreateManyStockCorrectionRepository(db);
+    const stockCorrectionRepository = new CreateManyBranchExpenseRepository(db);
     return await stockCorrectionRepository.handle(this.makeMany(count));
   }
 }
