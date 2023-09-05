@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { AggregatePosRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 import { fields } from "@src/database/mongodb/mongodb-querystring.js";
@@ -19,9 +20,27 @@ export class RetrieveAllPosUseCase {
       await verifyTokenUserService.handle(options.authorizationHeader ?? "");
 
       const filter = query.filter;
-      query.filter = {
-        $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
-      };
+      const filters = [];
+      if (filter.name) {
+        filters.push({ name: { $regex: filter.name ?? "", $options: "i" } });
+      }
+      if (filter.dateFrom) {
+        filters.push({ date: { $gte: filter.dateFrom } });
+      }
+      if (filter.dateTo) {
+        filters.push({ date: { $lte: filter.dateTo } });
+      }
+      if (filter.warehouse_id) {
+        filters.push({ warehouse_id: new ObjectId(filter.warehouse_id) });
+      }
+
+      if (filters.length > 1) {
+        query.filter = {
+          $and: filters,
+        };
+      } else {
+        query.filter = undefined;
+      }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const pipeline: any[] = [
@@ -53,7 +72,7 @@ export class RetrieveAllPosUseCase {
             },
           },
         },
-        { $unset: ["warehouse_id", "customer_id"] },
+        { $unset: ["customer_id"] },
       ];
 
       if (query && query.fields) {
@@ -65,7 +84,7 @@ export class RetrieveAllPosUseCase {
       }
 
       if (query && query.filter) {
-        // pipeline.push({ $match: { ...query.filter } });
+        pipeline.push({ $match: { ...query.filter } });
       }
 
       const response = await new AggregatePosRepository(this.db).handle(pipeline, query, options);
