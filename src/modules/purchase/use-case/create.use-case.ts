@@ -47,6 +47,7 @@ export class CreatePurchaseUseCase {
           color: document.color,
           totalQuantity: document.totalQuantity,
           price: document.price,
+          cargoPrice: document.cargoPrice,
           totalPrice: document.totalPrice,
           profitMargin: document.profitMargin,
           totalProfit: document.totalProfit,

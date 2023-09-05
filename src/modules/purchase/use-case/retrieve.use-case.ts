@@ -19,6 +19,7 @@ export interface ResponseInterface {
   photoUrl?: string;
   totalQuantity?: number;
   price?: number;
+  cargoPrice?: number;
   totalPrice?: number;
   profitMargin?: number;
   totalProfit?: number;
@@ -143,6 +144,7 @@ export class RetrievePurchaseUseCase {
         photoUrl: response.data[0].photoUrl,
         totalQuantity: response.data[0].totalQuantity,
         price: response.data[0].price,
+        cargoPrice: response.data[0].cargoPrice,
         totalPrice: response.data[0].totalPrice,
         profitMargin: response.data[0].profitMargin,
         totalProfit: response.data[0].totalProfit,

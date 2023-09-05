@@ -24,6 +24,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       photoUrl: result.photoUrl,
       totalQuantity: result.totalQuantity,
       price: result.price,
+      cargoPrice: result.cargoPrice,
       totalPrice: result.totalPrice,
       profitMargin: result.profitMargin,
       totalProfit: result.totalProfit,

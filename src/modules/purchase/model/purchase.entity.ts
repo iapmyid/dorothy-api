@@ -17,6 +17,7 @@ export interface PurchaseEntityInterface {
   photoUrl?: string;
   totalQuantity?: number;
   price?: number;
+  cargoPrice?: number;
   totalPrice?: number;
   profitMargin?: number;
   totalProfit?: number;
@@ -42,6 +43,7 @@ export class PurchaseEntity implements PurchaseEntityInterface {
   public photoUrl?: string;
   public totalQuantity?: number;
   public price?: number;
+  public cargoPrice?: number;
   public totalPrice?: number;
   public profitMargin?: number;
   public totalProfit?: number;
@@ -66,6 +68,7 @@ export class PurchaseEntity implements PurchaseEntityInterface {
     this.photoUrl = purchase.photoUrl;
     this.totalQuantity = purchase.totalQuantity;
     this.price = purchase.price;
+    this.cargoPrice = purchase.cargoPrice;
     this.totalPrice = purchase.totalPrice;
     this.profitMargin = purchase.profitMargin;
     this.totalProfit = purchase.totalProfit;
