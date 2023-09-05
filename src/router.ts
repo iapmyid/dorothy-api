@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import brancExpenseRouter from "./modules/branch-expense/router.js";
 import customerRouter from "./modules/customer/router.js";
 import inventoryRouter from "./modules/inventory/router.js";
 import itemRouter from "./modules/item/router.js";
@@ -29,6 +30,7 @@ export default function () {
   app.use("/v1/transfer-items", transferItemRouter);
   app.use("/v1/stock-corrections", stockCorrectionRouter);
   app.use("/v1/stock-opnames", stockOpnameRouter);
+  app.use("/v1/branch-expenses", brancExpenseRouter);
   app.use("/v1/inventories", inventoryRouter);
   app.use("/v1/pos", posRouter);
   return app;
