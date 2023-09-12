@@ -2,10 +2,15 @@ import { objClean } from "@point-hub/express-utils";
 import { format } from "date-fns";
 import { PurchaseEntity } from "../model/purchase.entity.js";
 import { CreatePurchaseRepository } from "../model/repository/create.repository.js";
+import { RetrieveAllPurchaseRepository } from "../model/repository/retrieve-all.repository.js";
 import { UpdateManyPurchaseRepository } from "../model/repository/update-many.repository.js";
 import { UpdatePurchaseRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/create.validation.js";
-import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import DatabaseConnection, {
+  CreateOptionsInterface,
+  DocumentInterface,
+  QueryInterface,
+} from "@src/database/connection.js";
 import { FinanceEntity } from "@src/modules/finance/model/finance.entity.js";
 import { CreateFinanceRepository } from "@src/modules/finance/model/repository/create.repository.js";
 import { InventoryEntity } from "@src/modules/inventory/model/inventory.js";
@@ -59,6 +64,15 @@ export class CreatePurchaseUseCase {
       );
       const response = await new CreatePurchaseRepository(this.db).handle(purchaseEntity, { session: options.session });
 
+      const query: QueryInterface = {
+        fields: "",
+        filter: {},
+        page: 1,
+        pageSize: 10,
+        sort: "",
+      };
+      const readp = await new RetrieveAllPurchaseRepository(this.db).handle(query);
+
       // save to database
       const financeEntity = objClean(
         new FinanceEntity({
@@ -74,14 +88,17 @@ export class CreatePurchaseUseCase {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const [i, el] of document.size.entries()) {
-        const barcode = format(new Date(), "ddyyIIhhmmss");
+        const barcode = `${format(new Date(), "yyII")}${String(readp.pagination.totalDocument).padStart(
+          4,
+          "0"
+        )}${String(i).padStart(2, "0")}`;
 
         if (el.quantity) {
           // save to database
           const itemEntity = objClean(
             new ItemEntity({
               itemCategory_id: document.itemCategory_id,
-              barcode: `${barcode}${String(i).padStart(2, "0")}`,
+              barcode: barcode,
               name: document.name,
               size: el.label,
               color: document.color,
@@ -103,7 +120,7 @@ export class CreatePurchaseUseCase {
             },
             {
               $set: {
-                "size.$.barcode": `${barcode}${String(i).padStart(2, "0")}`,
+                "size.$.barcode": barcode,
               },
             },
             {
