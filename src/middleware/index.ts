@@ -1,7 +1,7 @@
 import { invalidPathMiddleware, errorHandlerMiddleware } from "@point-hub/express-error-handler";
 import compression from "compression";
 import cors from "cors";
-import { json, urlencoded, Express } from "express";
+import { json, urlencoded, Express, bodyParser } from "express";
 import helmet from "helmet";
 
 /**
@@ -15,6 +15,8 @@ export default class Middleware {
   }
 
   registerBeforeRoutes() {
+    this.app.use();
+
     /**
      * Get Client IP
      *
@@ -29,7 +31,7 @@ export default class Middleware {
     // Gzip compressing can greatly decrease the size of the response body
     this.app.use(compression());
     // Parse json request body
-    this.app.use(json());
+    this.app.use(json({ limit: "50mb" }));
     // Parse urlencoded request body
     this.app.use(urlencoded({ extended: true }));
     // Set security HTTP headers
