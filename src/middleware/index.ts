@@ -1,7 +1,7 @@
 import { invalidPathMiddleware, errorHandlerMiddleware } from "@point-hub/express-error-handler";
 import compression from "compression";
 import cors from "cors";
-import { json, urlencoded, Express, bodyParser } from "express";
+import { json, urlencoded, Express } from "express";
 import helmet from "helmet";
 
 /**
