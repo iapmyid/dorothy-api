@@ -15,8 +15,6 @@ export default class Middleware {
   }
 
   registerBeforeRoutes() {
-    this.app.use();
-
     /**
      * Get Client IP
      *
