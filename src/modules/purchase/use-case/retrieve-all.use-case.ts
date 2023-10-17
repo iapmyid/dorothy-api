@@ -20,7 +20,10 @@ export class RetrieveAllPurchaseUseCase {
 
       const filter = query.filter;
       query.filter = {
-        $or: [{ name: { $regex: filter.name ?? "", $options: "i" } }],
+        $or: [
+          { name: { $regex: filter.name ?? "", $options: "i" } },
+          { "size.barcode": { $regex: filter.barcode ?? "", $options: "i" } },
+        ],
       };
 
       if (filter.date) {
