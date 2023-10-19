@@ -42,6 +42,8 @@ export class CreatePosUseCase {
           discount: document.discount,
           totalPrice: document.totalPrice,
           paymentType: document.paymentType,
+          cashReceived: document.cashReceived,
+          cashChange: document.cashChange,
           createdAt: createdAt,
           createdBy_id: authUser._id,
         })

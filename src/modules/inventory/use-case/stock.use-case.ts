@@ -91,6 +91,10 @@ export class StockInventoryUseCase {
         },
       ]);
 
+      if (filter.search) {
+        pipeline.push({ $match: { "item.barcode": filter.search } });
+      }
+
       if (query && query.fields) {
         pipeline.push({ $project: fields(query.fields) });
       }

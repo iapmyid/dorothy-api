@@ -23,6 +23,8 @@ export interface PosEntityInterface {
   discount?: number;
   totalPrice?: number;
   paymentType?: string;
+  cashReceived?: number;
+  cashChange?: number;
   createdAt?: Date;
   updatedAt?: Date;
   createdBy_id?: string;
@@ -40,6 +42,8 @@ export class PosEntity implements PosEntityInterface {
   public discount?: number;
   public totalPrice?: number;
   public paymentType?: string;
+  public cashReceived?: number;
+  public cashChange?: number;
   public createdAt?: Date;
   public updatedAt?: Date;
   public createdBy_id?: string;
@@ -56,6 +60,8 @@ export class PosEntity implements PosEntityInterface {
     this.discount = pos.discount;
     this.totalPrice = pos.totalPrice;
     this.paymentType = pos.paymentType;
+    this.cashReceived = pos.cashReceived;
+    this.cashChange = pos.cashChange;
     this.createdAt = pos.createdAt;
     this.updatedAt = pos.updatedAt;
     this.createdBy_id = pos.createdBy_id;

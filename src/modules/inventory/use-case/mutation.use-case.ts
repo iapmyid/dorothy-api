@@ -32,6 +32,7 @@ export class MutationInventoryUseCase {
       if (filter.size) {
         pipeline.push({ $match: { size: filter.size } });
       }
+
       pipeline = pipeline.concat([
         {
           $lookup: {
@@ -67,6 +68,10 @@ export class MutationInventoryUseCase {
         },
         { $unset: ["warehouse_id", "item_id"] },
       ]);
+
+      if (filter.search) {
+        pipeline.push({ $match: { "item.barcode": filter.search } });
+      }
 
       if (query && query.fields) {
         pipeline.push({ $project: fields(query.fields) });
