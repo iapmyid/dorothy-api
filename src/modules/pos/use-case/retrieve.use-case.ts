@@ -13,6 +13,8 @@ export interface ResponseInterface {
   subtotal?: number;
   discount?: number;
   totalPrice?: number;
+  cashReceived?: number;
+  cashChange?: number;
   paymentType?: string;
   createdBy_id?: string;
   createdAt?: Date;
@@ -116,6 +118,8 @@ export class RetrievePosUseCase {
         discount: response.data[0].discount ?? 0,
         totalPrice: response.data[0].totalPrice - response.data[0].discount ?? 0,
         paymentType: response.data[0].paymentType,
+        cashReceived: response.data[0].cashReceived,
+        cashChange: response.data[0].cashChange,
         createdAt: response.data[0].createdAt,
         createdBy: response.data[0].createdBy,
       };
