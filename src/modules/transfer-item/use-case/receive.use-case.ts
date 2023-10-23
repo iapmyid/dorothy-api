@@ -1,3 +1,4 @@
+import { ApiError } from "@point-hub/express-error-handler";
 import { objClean } from "@point-hub/express-utils";
 import { RetrieveTransferItemRepository } from "../model/repository/retrieve.repository.js";
 import { UpdateTransferItemRepository } from "../model/repository/update.repository.js";
@@ -56,6 +57,24 @@ export class ReceiveTransferItemUseCase {
               color: el.color,
               size: el.size,
               quantity: el.quantityReceived,
+              createdAt: receivedAt,
+            })
+          );
+          await new CreateInventoryRepository(this.db).handle(inventoryEntity, { session: options.session });
+        }
+        if (el.quantityReceived > el.quantity) {
+          throw new ApiError(400);
+        } else if (el.quantityReceived < el.quantity) {
+          // save to database
+          const inventoryEntity = objClean(
+            new InventoryEntity({
+              warehouse_id: document.warehouseOrigin._id,
+              reference: "transfer item",
+              reference_id: _id,
+              item_id: el._id,
+              color: el.color,
+              size: el.size,
+              quantity: el.quantity - el.quantityReceived,
               createdAt: receivedAt,
             })
           );
