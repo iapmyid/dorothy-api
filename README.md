@@ -157,5 +157,5 @@ node@902293b368b3:~/app$ npm run test
 ### Deployment
 
 ```bash
-docker build -t pointhub/papi-starter .
+docker buildx build --platform linux/amd64 -t iapmyid/dorothy-api . && docker push iapmyid/dorothy-api && k rollout restart deployment/dorothy-api-depl
 ```
