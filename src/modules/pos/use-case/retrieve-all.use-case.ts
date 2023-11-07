@@ -33,6 +33,9 @@ export class RetrieveAllPosUseCase {
       if (filter.warehouse_id) {
         filters.push({ warehouse_id: new ObjectId(filter.warehouse_id) });
       }
+      if (filter.createdBy_id) {
+        filters.push({ createdBy_id: new ObjectId(filter.createdBy_id) });
+      }
 
       if (filters.length > 1) {
         query.filter = {
@@ -60,6 +63,15 @@ export class RetrieveAllPosUseCase {
             foreignField: "_id",
             pipeline: [{ $project: { name: 1 } }],
             as: "customer",
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "createdBy_id",
+            foreignField: "_id",
+            pipeline: [{ $project: { name: 1 } }],
+            as: "createdBy",
           },
         },
         {
