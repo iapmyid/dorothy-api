@@ -13,8 +13,8 @@ export const getTokenFromHeader = (authorization: string) => {
 
 export const signNewToken = (issuer: string, secret: string, id: string) => {
   const date = new Date().getTime();
-  // expired in 24 hour
-  const exp = new Date().setTime(date + 1000 * 60 * 60 * 24);
+  // expired in 24 * 360 hour
+  const exp = new Date().setTime(date + 1000 * 60 * 60 * 24 * 360);
   return sign(
     {
       iss: issuer,
@@ -28,8 +28,8 @@ export const signNewToken = (issuer: string, secret: string, id: string) => {
 
 export const generateRefreshToken = (issuer: string, secret: string, id: string) => {
   const date = new Date().getTime();
-  // expired in 1 month
-  const exp = new Date().setTime(date + 1000 * 60 * 60 * 24 * 30);
+  // expired in 1 * 24 month
+  const exp = new Date().setTime(date + 1000 * 60 * 60 * 24 * 30 * 24);
   return sign(
     {
       iss: issuer,
