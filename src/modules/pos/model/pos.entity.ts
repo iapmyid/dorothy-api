@@ -7,6 +7,7 @@ export interface ItemInterface {
   _id?: string;
   name?: string;
   size?: string;
+  color?: string;
   quantity?: number;
   price?: number;
   total?: number;
@@ -25,6 +26,7 @@ export interface PosEntityInterface {
   paymentType?: string;
   cashReceived?: number;
   cashChange?: number;
+  void?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   createdBy_id?: string;

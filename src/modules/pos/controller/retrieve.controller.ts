@@ -24,6 +24,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       paymentType: result.paymentType,
       createdAt: result.createdAt,
       createdBy: result.createdBy,
+      void: result.void,
     });
   } catch (error) {
     next(error);

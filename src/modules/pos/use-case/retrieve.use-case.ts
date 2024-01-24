@@ -17,6 +17,7 @@ export interface ResponseInterface {
   cashChange?: number;
   paymentType?: string;
   createdBy_id?: string;
+  void?: boolean;
   createdAt?: Date;
   createdBy?: { _id: string; name: string };
 }
@@ -122,6 +123,7 @@ export class RetrievePosUseCase {
         cashChange: response.data[0].cashChange,
         createdAt: response.data[0].createdAt,
         createdBy: response.data[0].createdBy,
+        void: response.data[0].void,
       };
     } catch (error) {
       throw error;
