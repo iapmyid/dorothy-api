@@ -107,7 +107,7 @@ export class RetrievePosUseCase {
         } as QueryInterface,
         options
       );
-
+      console.log(response.data[0]);
       return {
         _id: response.data[0]._id,
         date: response.data[0].date,
@@ -115,9 +115,9 @@ export class RetrievePosUseCase {
         customer: response.data[0].customer,
         items: response.data[0].items,
         totalQuantity: response.data[0].totalQuantity,
-        subtotal: response.data[0].totalPrice,
+        subtotal: response.data[0].subtotal,
         discount: response.data[0].discount ?? 0,
-        totalPrice: response.data[0].totalPrice - response.data[0].discount ?? 0,
+        totalPrice: response.data[0].totalPrice,
         paymentType: response.data[0].paymentType,
         cashReceived: response.data[0].cashReceived,
         cashChange: response.data[0].cashChange,
