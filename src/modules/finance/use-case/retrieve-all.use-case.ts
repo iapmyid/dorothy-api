@@ -20,10 +20,10 @@ export class RetrieveAllFinanceUseCase {
       const filter = query.filter;
       const filters = [];
       if (filter.dateFrom) {
-        filters.push({ date: { $gte: filter.dateFrom } });
+        filters.push({ createdAt: { $gte: new Date(filter.dateFrom) } });
       }
       if (filter.dateTo) {
-        filters.push({ date: { $lte: filter.dateTo } });
+        filters.push({ createdAt: { $lte: new Date(filter.dateTo) } });
       }
 
       if (filters.length > 1) {

@@ -25,10 +25,10 @@ export class RetrieveAllPosUseCase {
         filters.push({ name: { $regex: filter.name ?? "", $options: "i" } });
       }
       if (filter.dateFrom) {
-        filters.push({ date: { $gte: filter.dateFrom } });
+        filters.push({ createdAt: { $gte: new Date(filter.dateFrom) } });
       }
       if (filter.dateTo) {
-        filters.push({ date: { $lte: filter.dateTo } });
+        filters.push({ createdAt: { $lte: new Date(filter.dateTo) } });
       }
       if (filter.warehouse_id) {
         filters.push({ warehouse_id: new ObjectId(filter.warehouse_id) });
